@@ -49,17 +49,17 @@ class ScenarioTest {
                 }
             }
         }
+
+        val findCityPage = FindCityPage(composeTestRule = composeTestRule)
+
+        findCityPage.input(text = "Mos")
+        findCityPage.assertCityFound(cityName = "Moscow")
+
+        findCityPage.clickFoundCity(cityName = "Moscow")
+        val weatherPage = WeatherPage(composeTestRule = composeTestRule)
+        weatherPage.assertCityName(cityName = "Moscow city")
+        weatherPage.assertWeatherDisplayed(temp = "33", feelTemp = "31", windSpeed = "5.5")
     }
-
-    val findCityPage = FindCityPage(composeTestRule = composeTestRule)
-
-    findCityPage.input(text = "Mos")
-    findCityPage.assertCityFound(cityName = "Moscow")
-
-    findCityPage.clickFoundCity(cityName = "Moscow")
-    val weatherPage = WeatherPage(composeTestRule = composeTestRule)
-    weatherPage.assertCityName(cityName = "Moscow city")
-    weatherPage.assertWeatherDisplayed(temp = "33", feelTemp = "31", windSpeed = "5.5")
 }
 
 private class FakeFindCityRepository : FindCityRepository {
