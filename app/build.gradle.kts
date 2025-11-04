@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "github.detrig.weatherapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "github.detrig.weatherapp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -59,8 +59,22 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.google.dagger:hilt-android:2.57.1")
-    ksp("com.google.dagger:hilt-compiler:2.57.1")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    //kapt(libs.androidx.room.compiler)
+    androidTestImplementation(libs.androidx.room.testing)
+
+    implementation(libs.hilt.android)
+    androidTestImplementation(libs.hilt.android.testing)
+    ksp(libs.hilt.android.compiler)
+    //kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp3.logging.interceptor)
 }
