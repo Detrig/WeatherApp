@@ -18,7 +18,7 @@ fun FindCityScreen(
     navigateToWeatherScreen: () -> Unit
 ) {
     val input = rememberSaveable { mutableStateOf("") }
-    val foundCItyUi = viewModel.state.collectAsStateWithLifeCycle()
+    val foundCityUi = viewModel.state.collectAsStateWithLifeCycle()
 
     FindCityScreenUi(
         input = input.value,
@@ -26,7 +26,7 @@ fun FindCityScreen(
             viewModel.findCity(cityName = text)
             input.value = text
         },
-        foundCityUi = foundCItyUi.value,
+        foundCityUi = foundCityUi.value,
         onFoundCityClick = { foundCity: FoundCity ->
             viewModel.saveChosenCity(foundCity = foundCity)
             navigateToWeatherScreen.invoke()

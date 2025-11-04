@@ -14,6 +14,8 @@ import github.detrig.weatherapp.findcity.FindCityScreenUi
 import github.detrig.weatherapp.findcity.FoundCityUi
 import github.detrig.weatherapp.weather.WeatherScreen
 import github.detrig.weatherapp.weather.WeatherScreenUi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +38,8 @@ class ScenarioTest {
                     FindCityScreen(
                         viewModel = FindCityViewModel(
                             savedStateHandle = SavedStateHandle(),
-                            repository = FakeFindCityRepository()
+                            repository = FakeFindCityRepository(),
+                            runAsync = FakeRunAsync()
                         ),
                         navigateToWeatherScreen = {
                             navController.navigate("weatherScreen")
@@ -48,7 +51,8 @@ class ScenarioTest {
                     WeatherScreen(
                         viewModel = WeatherViewModel(
                             savedStateHandle = SavedStateHandle(),
-                            repository = FakeWeatherRepository()
+                            repository = FakeWeatherRepository(),
+                            runAsync = FakeRunAsync()
                         )
                     )
                 }
@@ -121,7 +125,7 @@ class ScenarioTest {
 }
 
 
-private class FakeFindCityRepository : FindCityRepository {
+class FakeFindCityRepository : FindCityRepository {
 
     override suspend fun findCity(query: String): FoundCity {
         if (query == "Mos")
@@ -148,5 +152,15 @@ private class FakeWeatherRepository : WeatherRepository {
             feelTemperature = "31.2",
             windSpped = "5.5"
         )
+    }
+}
+
+private class FakeRunAsync : RunAsync {
+
+    override suspend fun <T : Any>runAsync(scope: CoroutineScope, background: () -> T, ui: (T) -> Unit) {
+        runBlocking {
+            val result : T = background.invoke()
+            ui.invoke(result)
+        }
     }
 }
