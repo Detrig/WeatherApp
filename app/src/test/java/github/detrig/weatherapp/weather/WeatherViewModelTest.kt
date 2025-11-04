@@ -2,8 +2,10 @@ package github.detrig.weatherapp.weather
 
 import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.findcity.FakeRunAsync
-import github.detrig.weatherapp.findcity.FindCityViewModel
-import github.detrig.weatherapp.findcity.FoundCityUi
+import github.detrig.weatherapp.weather.domain.WeatherInCity
+import github.detrig.weatherapp.weather.domain.WeatherRepository
+import github.detrig.weatherapp.weather.presentation.WeatherScreenUi
+import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Before
@@ -38,7 +40,7 @@ class WeatherViewModelTest {
             cityName = "Moscow city",
             temperature = "33.1",
             feelTemperature = "31.2",
-            windSpped = "5.5"
+            windSpeed = "5.5"
         )
 
         runAsync.returnResult()
@@ -51,12 +53,12 @@ class WeatherViewModelTest {
 
 private class FakeWeatherRepository : WeatherRepository {
 
-    override suspend fun weather(): WeatherForCity {
+    override suspend fun weather(): WeatherInCity {
         return WeatherInCity(
             cityName = "Moscow city",
             temperature = "33.1",
             feelTemperature = "31.2",
-            windSpped = "5.5"
+            windSpeed = "5.5"
         )
     }
 }

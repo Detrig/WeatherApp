@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.findcity
+package github.detrig.weatherapp.findcity.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicTextField
@@ -10,7 +10,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.serialization.Serializable
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import github.detrig.weatherapp.findcity.domain.FoundCity
+import java.io.Serializable
 
 @Composable
 fun FindCityScreen(
@@ -18,7 +20,7 @@ fun FindCityScreen(
     navigateToWeatherScreen: () -> Unit
 ) {
     val input = rememberSaveable { mutableStateOf("") }
-    val foundCityUi = viewModel.state.collectAsStateWithLifeCycle()
+    val foundCityUi = viewModel.state.collectAsStateWithLifecycle()
 
     FindCityScreenUi(
         input = input.value,
@@ -59,6 +61,7 @@ interface FoundCityUi : Serializable {
     fun Show(onFoundCityClick: (FoundCity) -> Unit)
 
     data object Empty : FoundCityUi {
+        private fun readResolve(): Any = Empty
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit) {

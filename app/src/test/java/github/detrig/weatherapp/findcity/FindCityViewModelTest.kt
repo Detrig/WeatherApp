@@ -1,6 +1,11 @@
 package github.detrig.weatherapp.findcity
 
 import androidx.lifecycle.SavedStateHandle
+import github.detrig.weatherapp.core.RunAsync
+import github.detrig.weatherapp.findcity.domain.FindCityRepository
+import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
+import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
@@ -76,9 +81,9 @@ class FakeRunAsync : RunAsync {
     private lateinit var resultCached: Any
     private lateinit var uiCached: (Any) -> Unit
 
-    override suspend fun <T : Any> runAsync(
+    override fun <T : Any> runAsync(
         scope: CoroutineScope,
-        background: () -> T,
+        background: suspend () -> T,
         ui: (T) -> Unit
     ) {
         runBlocking {

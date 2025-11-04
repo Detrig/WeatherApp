@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performTextInput
 class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
 
     private val inputField = composeTestRule.onNodeWithTag("findCityInputField")
-    private val foundCityUi = composeTestRule.onNodeWithTag("foundCityUi")
+    private val foundCityUi = composeTestRule.onNodeWithTag("foundCityUi", useUnmergedTree = true)
 
     fun input(text: String) {
         inputField.performTextInput(text)

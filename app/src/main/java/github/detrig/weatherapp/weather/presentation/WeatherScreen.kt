@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.weather
+package github.detrig.weatherapp.weather.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +13,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.Serializable
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import github.detrig.weatherapp.weather.domain.WeatherInCity
+import java.io.Serializable
 
 @Composable
 fun WeatherScreen(viewModel: WeatherViewModel) {
 
-    val weatherScreenUi = viewModel.state.collectAsStateWithLifeCycle()
+    val weatherScreenUi = viewModel.state.collectAsStateWithLifecycle()
     weatherScreenUi.value.Show()
 }
 
@@ -28,6 +30,8 @@ interface WeatherScreenUi : Serializable {
     fun Show()
 
     data object Empty : WeatherScreenUi {
+        private fun readResolve(): Any = Empty
+
         @Composable
         override fun Show() = Unit
     }
@@ -88,7 +92,7 @@ fun PreviewWeatherScreenUi() {
             cityName = "Moscow city",
             temperature = "33.1",
             feelTemperature = "31.2",
-            windSpped = "5.5"
+            windSpeed = "5.5"
         )
     )
 }
