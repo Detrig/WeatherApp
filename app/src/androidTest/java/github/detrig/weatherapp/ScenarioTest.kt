@@ -1,13 +1,19 @@
 package github.detrig.weatherapp
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import github.detrig.weatherapp.findcity.FindCityScreen
+import github.detrig.weatherapp.findcity.FindCityScreenUi
+import github.detrig.weatherapp.findcity.FoundCityUi
+import github.detrig.weatherapp.weather.WeatherScreen
+import github.detrig.weatherapp.weather.WeatherScreenUi
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,10 +41,9 @@ class ScenarioTest {
                         navigateToWeatherScreen = {
                             navController.navigate("weatherScreen")
                         }
-                    ) {
-                        navController.navigate("second")
-                    }
+                    )
                 }
+
                 composable("weatherScreen") {
                     WeatherScreen(
                         viewModel = WeatherViewModel(
@@ -50,6 +55,55 @@ class ScenarioTest {
             }
         }
 
+        startUiTest()
+    }
+
+    @Test
+    fun findCityAndShowWeatherUi(): Unit = with(composeTestRule) {
+        setContent {
+            val navController: NavHostController = rememberNavController()
+            NavHost(navController = navController, startDestination = "findCityScreen") {
+                composable("findCityScreen") {
+                    val input = rememberSaveable { mutableStateOf("") }
+
+                    FindCityScreenUi(
+                        input = input.value,
+                        onInputChange = { text: String ->
+                            input.value = text
+                        },
+                        foundCityUi = if (input.value.isEmpty())
+                            FoundCityUi.Empty
+                        else
+                            FoundCityUi.Base(
+                                foundCity = FoundCity(
+                                    name = "Moscow",
+                                    latitude = 55.75,
+                                    longitude = 37.61
+                                )
+                            ),
+                        onFoundCityClick = { foundCity: FoundCity ->
+                            navController.navigate("weatherScreen")
+                        }
+                    )
+                }
+
+                composable("weatherScreen") {
+                    WeatherScreenUi.Base(
+                        cityParams = CityParams(
+                            cityName = "Moscow city",
+                            temperature = "33.1",
+                            feelTemperature = "31.2",
+                            windSpeed = "5.5"
+                        )
+                    ).Show()
+                }
+
+            }
+            startUiTest()
+        }
+    }
+
+    private fun startUiTest() {
         val findCityPage = FindCityPage(composeTestRule = composeTestRule)
 
         findCityPage.input(text = "Mos")
@@ -58,9 +112,14 @@ class ScenarioTest {
         findCityPage.clickFoundCity(cityName = "Moscow")
         val weatherPage = WeatherPage(composeTestRule = composeTestRule)
         weatherPage.assertCityName(cityName = "Moscow city")
-        weatherPage.assertWeatherDisplayed(temp = "33", feelTemp = "31", windSpeed = "5.5")
+        weatherPage.assertWeatherDisplayed(
+            temp = "33.1",
+            feelTemp = "31.2",
+            windSpeed = "5.5"
+        )
     }
 }
+
 
 private class FakeFindCityRepository : FindCityRepository {
 
@@ -82,7 +141,12 @@ private class FakeFindCityRepository : FindCityRepository {
 
 private class FakeWeatherRepository : WeatherRepository {
 
-    override suspend fun weather() : WeatherForCity {
-        return WeatherInCity(cityName = "Moscow city", temperature = "33", feelTemperature = "31", windSpped = "5.5")
+    override suspend fun weather(): WeatherForCity {
+        return WeatherInCity(
+            cityName = "Moscow city",
+            temperature = "33.1",
+            feelTemperature = "31.2",
+            windSpped = "5.5"
+        )
     }
 }
