@@ -41,25 +41,36 @@ class FindCityViewModelTest {
         viewModel.findCity(cityName = "Mos")
         assertEquals(FoundCityUi.Empty, actual)
         runAsync.returnResult()
-        val foundCity = FoundCity(name = "Moscow", latitude = 55.75, longitude = 37.61)
+        val foundCityList = listOf(
+            FoundCity(
+                name = "Moscow",
+                latitude = 55.75,
+                country = "Russia",
+                longitude = 37.61
+            ), FoundCity(name = "Moscow", latitude = 55.75, country = "USA", longitude = 37.61)
+        )
         assertEquals(
-            FoundCityUi.Base(foundCity), viewModel.state.value
+            FoundCityUi.Base(foundCityList), viewModel.state.value
         )
 
-        viewModel.saveChosenCity(foundCity)
-        repository.assertSaveCalled(foundCity)
+
+        viewModel.saveChosenCity(foundCityList.first())
+        repository.assertSaveCalled(foundCityList.first())
 
     }
 }
 
 private class FakeFindCityRepository : FindCityRepository {
 
-    override suspend fun findCity(query: String): FoundCity {
+    override suspend fun findCity(query: String): List<FoundCity> {
         if (query == "Mos")
-            return FoundCity(
-                name = "Moscow",
-                latitude = 55.75,
-                longitude = 37.61
+            return listOf(
+                FoundCity(
+                    name = "Moscow",
+                    latitude = 55.75,
+                    country = "Russia",
+                    longitude = 37.61
+                )
             )
         throw IllegalStateException("not supported for this test")
     }

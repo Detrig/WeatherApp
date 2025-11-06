@@ -85,12 +85,20 @@ class ScenarioTest {
                         foundCityUi = if (input.value.isEmpty())
                             FoundCityUi.Empty
                         else
-                            FoundCityUi.Base(
-                                foundCity = FoundCity(
+                            FoundCityUi.Base(listOf(
+                                FoundCity(
                                     name = "Moscow",
+                                    country = "Russia",
+                                    latitude = 55.75,
+                                    longitude = 37.61
+                                ),
+                                FoundCity(
+                                    name = "Moscow",
+                                    country = "USA",
                                     latitude = 55.75,
                                     longitude = 37.61
                                 )
+                            )
                             ),
                         onFoundCityClick = { foundCity: FoundCity ->
                             navController.navigate("weatherScreen")
@@ -118,7 +126,8 @@ class ScenarioTest {
         val findCityPage = FindCityPage(composeTestRule = composeTestRule)
 
         findCityPage.input(text = "Mos")
-        findCityPage.assertCityFound(cityName = "Moscow")
+        findCityPage.assertCityFound(cityName = "Moscow", country = "Russia")
+        findCityPage.assertCityFound(cityName = "Moscow", country = "USA")
 
         findCityPage.clickFoundCity(cityName = "Moscow")
         val weatherPage = WeatherPage(composeTestRule = composeTestRule)
@@ -134,18 +143,27 @@ class ScenarioTest {
 
 class FakeFindCityRepository : FindCityRepository {
 
-    override suspend fun findCity(query: String): FoundCity {
+    override suspend fun findCity(query: String): List<FoundCity> {
         if (query == "Mos")
-            return FoundCity(
-                name = "Moscow",
-                latitude = 55.75,
-                longitude = 37.61
+            return listOf(
+                FoundCity(
+                    name = "Moscow",
+                    latitude = 55.75,
+                    country = "Russia",
+                    longitude = 37.61
+                )
             )
         throw IllegalStateException("not supported for this test")
     }
 
     override suspend fun saveCity(foundCity: FoundCity) {
-        if (foundCity != FoundCity(name = "Moscow", latitude = 55.75, longitude = 37.61))
+        if (foundCity != FoundCity(
+                name = "Moscow",
+                country = "Russia",
+                latitude = 55.75,
+                longitude = 37.61
+            )
+        )
             throw IllegalStateException("save called with wrong argument $foundCity")
     }
 }

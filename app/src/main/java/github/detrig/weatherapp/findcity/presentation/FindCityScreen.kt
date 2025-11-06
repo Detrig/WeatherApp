@@ -1,6 +1,8 @@
 package github.detrig.weatherapp.findcity.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -69,19 +71,30 @@ interface FoundCityUi : Serializable {
         }
     }
 
-    data class Base(private val foundCity: FoundCity) : FoundCityUi {
+    data class Base(private val foundCityList: List<FoundCity>) : FoundCityUi {
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit) {
             //todo Button(onClick = onfoundCityClick.invoke(foundcity)
 
-            Button(
-                onClick = {
-                    onFoundCityClick.invoke(foundCity)
-                }) {
-                Text(text = foundCity.name, modifier = Modifier.testTag("foundCityUi"))
+            LazyColumn(Modifier.testTag("foundCityListUi")) {
+                items(foundCityList) {
+                    CityListItem(onFoundCityClick, it)
+                }
             }
         }
+    }
+}
+
+@Composable
+fun CityListItem(onFoundCityClick: (FoundCity) -> Unit, foundCity: FoundCity) {
+    Button(
+        onClick = {
+            onFoundCityClick.invoke(foundCity)
+        }) {
+        Text(
+            text = "${foundCity.name} - ${foundCity.country}"
+        )
     }
 }
 
@@ -99,10 +112,25 @@ fun PreviewEmptyFindCityScreenUi() {
 fun PreviewNotEmptyFindCityScreenUi() {
     FindCityScreenUi(
         input = "Mosc", onInputChange = {}, foundCityUi = FoundCityUi.Base(
-            foundCity = FoundCity(
-                name = "Moscow",
-                latitude = 55.75,
-                longitude = 37.61
+            foundCityList = listOf(
+                FoundCity(
+                    name = "Moscow",
+                    country = "Russia",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
+                FoundCity(
+                    name = "Moscow",
+                    country = "USA",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
+                FoundCity(
+                    name = "Moscow",
+                    country = "Russia",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
             )
         )
     ) {

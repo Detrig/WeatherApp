@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface RunAsync {
 
@@ -15,6 +15,7 @@ interface RunAsync {
         ui: (T) -> Unit
     )
 
+    @Singleton
     class Base @Inject constructor(
 
     ) : RunAsync {
