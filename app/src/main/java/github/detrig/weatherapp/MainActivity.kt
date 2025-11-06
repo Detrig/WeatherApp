@@ -43,7 +43,7 @@ private fun MainContent(innerPadding: PaddingValues) {
     NavHost(
         navController = navController,
         startDestination = "findCityScreen",
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier.padding(innerPadding).fillMaxSize()
     ) {
         composable("findCityScreen") {
             FindCityScreen(

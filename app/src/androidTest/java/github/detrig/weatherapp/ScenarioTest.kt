@@ -110,9 +110,11 @@ class ScenarioTest {
                     WeatherScreenUi.Base(
                         cityParams = WeatherInCity(
                             cityName = "Moscow city",
-                            temperature = "33.1",
-                            feelTemperature = "31.2",
-                            windSpeed = "5.5"
+                            temperature = 33.1f,
+                            feelTemperature = 31.2f,
+                            windSpeed = 5.5f,
+                            uv = 0.4f,
+                            condition = "Sunny"
                         )
                     ).Show()
                 }
@@ -135,8 +137,10 @@ class ScenarioTest {
         weatherPage.assertWeatherDisplayed(
             temp = "33.1",
             feelTemp = "31.2",
-            windSpeed = "5.5"
+            windSpeed = "5.5",
+            uv = "0.2"
         )
+        weatherPage.assertBackgroundForCondition("SunnyBackground")
     }
 }
 
@@ -173,9 +177,11 @@ private class FakeWeatherRepository : WeatherRepository {
     override suspend fun weather(): WeatherInCity {
         return WeatherInCity(
             cityName = "Moscow city",
-            temperature = "33.1",
-            feelTemperature = "31.2",
-            windSpeed = "5.5"
+            temperature = 33.1f,
+            feelTemperature = 31.2f,
+            windSpeed = 5.5f,
+            uv = 0.4f,
+            condition = "Sunny"
         )
     }
 }

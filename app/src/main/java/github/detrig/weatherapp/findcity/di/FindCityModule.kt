@@ -7,31 +7,23 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import github.detrig.weatherapp.findcity.data.FindCityCloudDataSource
 import github.detrig.weatherapp.findcity.data.FindCityService
-import github.detrig.weatherapp.findcity.domain.FindCityCachedDataSource
+import github.detrig.weatherapp.findcity.data.FindCityCachedDataSource
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
-import jakarta.inject.Named
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 @Module
 @InstallIn(ViewModelComponent::class)
 class FindCityModule {
 
     @Provides
-    fun provideWeatherService(@Named("weather") retrofit: Retrofit): FindCityService =
+    fun provideFindCityService(@Named("weather") retrofit: Retrofit): FindCityService =
         retrofit.create(FindCityService::class.java)
-
-    @Provides
-    @Named("weather")
-    fun provideWeatherRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.weatherapi.com/v1/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class FindCityBindModule {
+abstract class FindCityBindsModule {
 
     @Binds
     abstract fun bindFindCityCloudDataSource(dataSource: FindCityCloudDataSource.Base): FindCityCloudDataSource

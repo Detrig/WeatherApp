@@ -38,9 +38,11 @@ class WeatherViewModelTest {
 
         val weatherForCity = WeatherInCity(
             cityName = "Moscow city",
-            temperature = "33.1",
-            feelTemperature = "31.2",
-            windSpeed = "5.5"
+            temperature = 33.1f,
+            feelTemperature = 31.2f,
+            windSpeed = 5.5f,
+            uv = 0.4f,
+            condition = "Sunny"
         )
 
         runAsync.returnResult()
@@ -56,9 +58,11 @@ private class FakeWeatherRepository : WeatherRepository {
     override suspend fun weather(): WeatherInCity {
         return WeatherInCity(
             cityName = "Moscow city",
-            temperature = "33.1",
-            feelTemperature = "31.2",
-            windSpeed = "5.5"
+            temperature = 33.1f,
+            feelTemperature = 31.2f,
+            windSpeed = 5.5f,
+            uv = 0.4f,
+            condition = "Sunny"
         )
     }
 }

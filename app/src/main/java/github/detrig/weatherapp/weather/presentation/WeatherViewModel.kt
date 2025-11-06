@@ -9,6 +9,7 @@ import github.detrig.weatherapp.weather.domain.WeatherRepository
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val savedStateHandle: SavedStateHandle,
@@ -26,6 +27,7 @@ class WeatherViewModel @Inject constructor(
             savedStateHandle[KEY] = it
         }
     }
+
     companion object {
         private const val KEY = "WeatherScreenUiKey"
     }

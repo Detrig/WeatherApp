@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.findcity.domain
 
+import github.detrig.weatherapp.findcity.data.FindCityCachedDataSource
 import github.detrig.weatherapp.findcity.data.FindCityCloudDataSource
 import javax.inject.Inject
 

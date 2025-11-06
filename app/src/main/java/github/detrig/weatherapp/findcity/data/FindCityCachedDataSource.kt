@@ -1,10 +1,11 @@
-package github.detrig.weatherapp.findcity.domain
+package github.detrig.weatherapp.findcity.data
 
 import android.content.Context
+import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import github.detrig.weatherapp.R
+import github.detrig.weatherapp.core.AbstractCachedDataSource
 import javax.inject.Inject
-import androidx.core.content.edit
 
 interface FindCityCachedDataSource {
 
@@ -12,10 +13,7 @@ interface FindCityCachedDataSource {
 
     class Base @Inject constructor(
         @ApplicationContext context: Context,
-    ) : FindCityCachedDataSource {
-
-        private val sharedPreferences =
-            context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    ) : FindCityCachedDataSource, AbstractCachedDataSource(context) {
 
         override suspend fun save(
             cityName: String,
@@ -29,13 +27,6 @@ interface FindCityCachedDataSource {
                     .putFloat(LATITUDE, latitude.toFloat())
                     .putFloat(LONGITUDE, longitude.toFloat())
             }
-        }
-
-        companion object {
-            private const val NAME = "cityNameKey"
-            private const val COUNTRY = "countryKey"
-            private const val LATITUDE = "latitudeKey"
-            private const val LONGITUDE = "longitudeKey"
         }
     }
 }

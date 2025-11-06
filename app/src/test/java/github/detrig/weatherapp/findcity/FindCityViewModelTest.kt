@@ -70,6 +70,12 @@ private class FakeFindCityRepository : FindCityRepository {
                     latitude = 55.75,
                     country = "Russia",
                     longitude = 37.61
+                ),
+                FoundCity(
+                    name = "Moscow",
+                    latitude = 55.75,
+                    country = "USA",
+                    longitude = 37.61
                 )
             )
         throw IllegalStateException("not supported for this test")

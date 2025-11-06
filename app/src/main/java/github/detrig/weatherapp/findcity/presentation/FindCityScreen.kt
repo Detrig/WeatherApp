@@ -1,6 +1,8 @@
 package github.detrig.weatherapp.findcity.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
@@ -10,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import github.detrig.weatherapp.findcity.domain.FoundCity
 import java.io.Serializable
@@ -27,8 +31,10 @@ fun FindCityScreen(
     FindCityScreenUi(
         input = input.value,
         onInputChange = { text ->
-            viewModel.findCity(cityName = text)
-            input.value = text
+            if (text.isNotEmpty()) {
+                viewModel.findCity(cityName = text)
+                input.value = text
+            }
         },
         foundCityUi = foundCityUi.value,
         onFoundCityClick = { foundCity: FoundCity ->
@@ -48,7 +54,10 @@ fun FindCityScreenUi(
 
     Column {
         BasicTextField(
-            modifier = Modifier.testTag("findCityInputField"),
+            modifier = Modifier
+                .testTag("findCityInputField")
+                .padding(8.dp)
+                .background(Color.Blue),
             value = input,
             onValueChange = onInputChange
         )

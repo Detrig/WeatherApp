@@ -4,7 +4,9 @@ import java.io.Serializable
 
 data class WeatherInCity(
     val cityName: String,
-    val temperature: String,
-    val feelTemperature: String,
-    val windSpeed: String
+    val temperature: Float,
+    val feelTemperature: Float,
+    val windSpeed: Float,
+    val uv: Float,
+    val condition: String
 ) : Serializable
