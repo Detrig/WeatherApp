@@ -15,10 +15,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import github.detrig.weatherapp.findcity.FindCityScreen
+import dagger.hilt.android.AndroidEntryPoint
+import github.detrig.weatherapp.findcity.presentation.FindCityScreen
+import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.ui.theme.WeatherAppTheme
-import github.detrig.weatherapp.weather.WeatherScreen
+import github.detrig.weatherapp.weather.presentation.WeatherScreen
+import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +43,7 @@ private fun MainContent(innerPadding: PaddingValues) {
     NavHost(
         navController = navController,
         startDestination = "findCityScreen",
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier.padding(innerPadding).fillMaxSize()
     ) {
         composable("findCityScreen") {
             FindCityScreen(

@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "github.detrig.weatherapp"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -77,4 +77,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.retrofit.converter.gson)
+
+    implementation(libs.gson)
 }

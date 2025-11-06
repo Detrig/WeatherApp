@@ -1,6 +1,10 @@
-package github.detrig.weatherapp.findcity
+package github.detrig.weatherapp.findcity.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -8,9 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.serialization.Serializable
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import github.detrig.weatherapp.findcity.domain.FoundCity
+import java.io.Serializable
 
 @Composable
 fun FindCityScreen(
@@ -18,15 +26,17 @@ fun FindCityScreen(
     navigateToWeatherScreen: () -> Unit
 ) {
     val input = rememberSaveable { mutableStateOf("") }
-    val foundCItyUi = viewModel.state.collectAsStateWithLifeCycle()
+    val foundCityUi = viewModel.state.collectAsStateWithLifecycle()
 
     FindCityScreenUi(
         input = input.value,
         onInputChange = { text ->
-            viewModel.findCity(cityName = text)
-            input.value = text
+            if (text.isNotEmpty()) {
+                viewModel.findCity(cityName = text)
+                input.value = text
+            }
         },
-        foundCityUi = foundCItyUi.value,
+        foundCityUi = foundCityUi.value,
         onFoundCityClick = { foundCity: FoundCity ->
             viewModel.saveChosenCity(foundCity = foundCity)
             navigateToWeatherScreen.invoke()
@@ -44,7 +54,10 @@ fun FindCityScreenUi(
 
     Column {
         BasicTextField(
-            modifier = Modifier.testTag("findCityInputField"),
+            modifier = Modifier
+                .testTag("findCityInputField")
+                .padding(8.dp)
+                .background(Color.Blue),
             value = input,
             onValueChange = onInputChange
         )
@@ -59,6 +72,7 @@ interface FoundCityUi : Serializable {
     fun Show(onFoundCityClick: (FoundCity) -> Unit)
 
     data object Empty : FoundCityUi {
+        private fun readResolve(): Any = Empty
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit) {
@@ -66,19 +80,30 @@ interface FoundCityUi : Serializable {
         }
     }
 
-    data class Base(private val foundCity: FoundCity) : FoundCityUi {
+    data class Base(private val foundCityList: List<FoundCity>) : FoundCityUi {
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit) {
             //todo Button(onClick = onfoundCityClick.invoke(foundcity)
 
-            Button(
-                onClick = {
-                    onFoundCityClick.invoke(foundCity)
-                }) {
-                Text(text = foundCity.name, modifier = Modifier.testTag("foundCityUi"))
+            LazyColumn(Modifier.testTag("foundCityListUi")) {
+                items(foundCityList) {
+                    CityListItem(onFoundCityClick, it)
+                }
             }
         }
+    }
+}
+
+@Composable
+fun CityListItem(onFoundCityClick: (FoundCity) -> Unit, foundCity: FoundCity) {
+    Button(
+        onClick = {
+            onFoundCityClick.invoke(foundCity)
+        }) {
+        Text(
+            text = "${foundCity.name} - ${foundCity.country}"
+        )
     }
 }
 
@@ -96,10 +121,25 @@ fun PreviewEmptyFindCityScreenUi() {
 fun PreviewNotEmptyFindCityScreenUi() {
     FindCityScreenUi(
         input = "Mosc", onInputChange = {}, foundCityUi = FoundCityUi.Base(
-            foundCity = FoundCity(
-                name = "Moscow",
-                latitude = 55.75,
-                longitude = 37.61
+            foundCityList = listOf(
+                FoundCity(
+                    name = "Moscow",
+                    country = "Russia",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
+                FoundCity(
+                    name = "Moscow",
+                    country = "USA",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
+                FoundCity(
+                    name = "Moscow",
+                    country = "Russia",
+                    latitude = 55.75,
+                    longitude = 37.61
+                ),
             )
         )
     ) {
