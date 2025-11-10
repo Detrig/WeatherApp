@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 
 class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
 
@@ -12,7 +13,7 @@ class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
     private val foundCityUi = composeTestRule.onNodeWithTag("foundCityListUi", useUnmergedTree = true)
 
     fun input(text: String) {
-        inputField.performTextInput(text)
+        inputField.performTextReplacement(text)
     }
 
     fun assertCityFound(cityName: String, country: String) {

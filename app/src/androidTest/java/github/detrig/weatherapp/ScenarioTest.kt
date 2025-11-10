@@ -38,13 +38,17 @@ class ScenarioTest {
 
     @Test
     fun findCityAndShowWeather(): Unit = with(composeTestRule) {
+        val findCityMapper: FindCityResult.Mapper<FoundCityUi> = FindCityUiMapper()
         val findCityViewModel = FindCityViewModel(
+            mapper = findCityMapper,
             repository = FakeFindCityRepository(),
             savedStateHandle = SavedStateHandle(),
             runAsync = FakeRunAsync()
         )
 
+        val weatherMapper : WeatherResult.Mapper<WeatherScreenUi> = WeatherUiMapper()
         val weatherViewModel = WeatherViewModel(
+            mapper = weatherMapper,
             repository = FakeWeatherRepository(),
             savedStateHandle = SavedStateHandle(),
             runAsync = FakeRunAsync()
@@ -80,6 +84,7 @@ class ScenarioTest {
             NavHost(navController = navController, startDestination = "findCityScreen") {
                 composable("findCityScreen") {
                     val input = rememberSaveable { mutableStateOf("") }
+                    val shouldShowNoConnectionError = rememberSaveable { mutableStateOf(true) }
 
                     FindCityScreenUi(
                         input = input.value,
@@ -88,39 +93,60 @@ class ScenarioTest {
                         },
                         foundCityUi = if (input.value.isEmpty())
                             FoundCityUi.Empty
+                        else if (input.value == "FUCK")
+                            if (shouldShowNoConnectionError.value) {
+                                FoundCityUi.NoConnectionError
+                            } else {
+                                FoundCityUi.Empty
+                            }
                         else
-                            FoundCityUi.Base(listOf(
-                                FoundCity(
-                                    name = "Moscow",
-                                    country = "Russia",
-                                    latitude = 55.75,
-                                    longitude = 37.61
-                                ),
-                                FoundCity(
-                                    name = "Moscow",
-                                    country = "USA",
-                                    latitude = 55.75,
-                                    longitude = 37.61
+                            FoundCityUi.Base(
+                                listOf(
+                                    FoundCity(
+                                        name = "Moscow",
+                                        country = "Russia",
+                                        latitude = 55.75,
+                                        longitude = 37.61
+                                    ),
+                                    FoundCity(
+                                        name = "Moscow",
+                                        country = "USA",
+                                        latitude = 55.75,
+                                        longitude = 37.61
+                                    )
                                 )
-                            )
                             ),
                         onFoundCityClick = { foundCity: FoundCity ->
                             navController.navigate("weatherScreen")
+                        },
+                        onRetry = {
+                            shouldShowNoConnectionError.value = false
                         }
                     )
                 }
 
                 composable("weatherScreen") {
-                    WeatherScreenUi.Base(
-                        cityParams = WeatherInCity(
-                            cityName = "Moscow",
-                            temperature = 33.1f,
-                            feelTemperature = 31.2f,
-                            windSpeed = 5.5f,
-                            uv = 0.4f,
-                            condition = "Sunny"
-                        )
-                    ).Show()
+                    val shouldShowError = rememberSaveable { mutableStateOf(true) }
+
+                    if (shouldShowError.value) {
+                        shouldShowError.value = false
+                        WeatherScreenUi.NoConnectionError.Show(OnRetryClick = {
+                            shouldShowError.value = false
+                        })
+                    } else {
+                        WeatherScreenUi.Base(
+                            cityParams = WeatherInCity(
+                                cityName = "Moscow",
+                                temperature = 33.1f,
+                                feelTemperature = 31.2f,
+                                windSpeed = 5.5f,
+                                uv = 0.4f,
+                                condition = "Sunny"
+                            )
+                        ).Show(OnRetryClick = {
+                            //nothing to do
+                        })
+                    }
                 }
 
             }
@@ -131,12 +157,20 @@ class ScenarioTest {
     private fun startUiTest() {
         val findCityPage = FindCityPage(composeTestRule = composeTestRule)
 
+        findCityPage.input(text = "FUCK")
+        findCityPage.assertNoConnectionIsDisplayed()
+
+        findCityPage.clickRetry()
+        findCityPage.assertEmptyResult()
+
         findCityPage.input(text = "Mos")
         findCityPage.assertCityFound(cityName = "Moscow", country = "Russia")
         findCityPage.assertCityFound(cityName = "Moscow", country = "USA")
 
         findCityPage.clickFoundCity(cityName = "Moscow - Russia")
         val weatherPage = WeatherPage(composeTestRule = composeTestRule)
+        weatherPage.assertNoConnectionIsDisplayed()
+        weatherPage.clickRetry()
         weatherPage.assertCityName(cityName = "Moscow")
         weatherPage.assertWeatherDisplayed(
             temp = "33.1",
@@ -151,22 +185,37 @@ class ScenarioTest {
 
 class FakeFindCityRepository : FindCityRepository {
 
-    override suspend fun findCity(query: String): List<FoundCity> {
+    private var shouldShowError = true
+
+    override suspend fun findCity(query: String): FindCityResult {
+        if (query.trim().isEmpty())
+            throw IllegalStateException("repository should not accept empty query")
+
+        if (query == "FUCK") {
+            shouldShowError = false
+            return FindCityResult.Failed(error = NoInternetException)
+        } else {
+            return FindCityResult.Empty
+        }
+
         if (query == "Mos")
-            return listOf(
-                FoundCity(
-                    name = "Moscow",
-                    latitude = 55.75,
-                    country = "Russia",
-                    longitude = 37.61
-                ),
-                FoundCity(
-                    name = "Moscow",
-                    country = "USA",
-                    latitude = 55.75,
-                    longitude = 37.61
+            return FindCityResult.Base(
+                listOf(
+                    FoundCity(
+                        name = "Moscow",
+                        latitude = 55.75,
+                        country = "Russia",
+                        longitude = 37.61
+                    ),
+                    FoundCity(
+                        name = "Moscow",
+                        country = "USA",
+                        latitude = 55.75,
+                        longitude = 37.61
+                    )
                 )
             )
+
         throw IllegalStateException("not supported for this test")
     }
 
@@ -184,15 +233,24 @@ class FakeFindCityRepository : FindCityRepository {
 
 private class FakeWeatherRepository : WeatherRepository {
 
-    override suspend fun weather(): WeatherInCity {
-        return WeatherInCity(
-            cityName = "Moscow",
-            temperature = 33.1f,
-            feelTemperature = 31.2f,
-            windSpeed = 5.5f,
-            uv = 0.4f,
-            condition = "Sunny"
-        )
+    private var shouldShowError = true
+
+    override suspend fun weather(): WeatherResult {
+        if (shouldShowError) {
+            shouldShowError = false
+            return WeatherResult.Failed(error = NoInternetException)
+        } else {
+            return WeatherResult.Base(
+                WeatherInCity(
+                    cityName = "Moscow",
+                    temperature = 33.1f,
+                    feelTemperature = 31.2f,
+                    windSpeed = 5.5f,
+                    uv = 0.4f,
+                    condition = "Sunny"
+                )
+            )
+        }
     }
 }
 
@@ -201,7 +259,7 @@ class FakeRunAsync : RunAsync {
     private lateinit var resultCached: Any
     private lateinit var uiCached: (Any) -> Unit
 
-    override fun <T: Any> runAsync(
+    override fun <T : Any> runAsync(
         scope: CoroutineScope,
         background: suspend () -> T,
         ui: (T) -> Unit
