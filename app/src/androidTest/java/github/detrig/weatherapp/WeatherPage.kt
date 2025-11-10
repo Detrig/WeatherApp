@@ -11,7 +11,6 @@ class WeatherPage(private val composeTestRule: ComposeContentTestRule) {
     private val feelTempNode = composeTestRule.onNodeWithTag("FeelTemp")
     private val windSpeedNode = composeTestRule.onNodeWithTag("WindSpeed")
     private val uvNode = composeTestRule.onNodeWithTag("Uv")
-    private val backgroundNode = composeTestRule.onNodeWithTag("WeatherBackground")
 
     fun assertCityName(cityName: String) {
         cityNameNode.assertTextEquals(cityName)

@@ -20,6 +20,6 @@ class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun clickFoundCity(cityName: String) {
-        composeTestRule.onNodeWithTag(cityName).performClick()
+        composeTestRule.onNodeWithText(cityName).performClick()
     }
 }
