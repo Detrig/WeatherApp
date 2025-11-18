@@ -1,10 +1,15 @@
 package github.detrig.weatherapp
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 
 class WeatherPage(private val composeTestRule: ComposeContentTestRule) {
+
+    private val noConnectionError = composeTestRule.onNodeWithTag("noInternetConnectionLayer")
+    private val retryButton = composeTestRule.onNodeWithTag("retryButton")
 
     private val cityNameNode = composeTestRule.onNodeWithTag("City")
     private val weatherTemperatureNode = composeTestRule.onNodeWithTag("Weather")
@@ -26,4 +31,18 @@ class WeatherPage(private val composeTestRule: ComposeContentTestRule) {
     fun assertBackgroundForCondition(expectedConditionTag: String) {
         composeTestRule.onNodeWithTag(expectedConditionTag).assertExists()
     }
+
+    fun assertNoConnectionIsDisplayed() {
+        noConnectionError.assertIsDisplayed()
+
+        weatherTemperatureNode.assertDoesNotExist()
+        feelTempNode.assertDoesNotExist()
+        windSpeedNode.assertDoesNotExist()
+        uvNode.assertDoesNotExist()
+    }
+
+    fun clickRetry() {
+        retryButton.performClick()
+    }
+
 }

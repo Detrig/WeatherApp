@@ -170,6 +170,7 @@ class ScenarioTest {
         findCityPage.clickFoundCity(cityName = "Moscow - Russia")
         val weatherPage = WeatherPage(composeTestRule = composeTestRule)
         weatherPage.assertNoConnectionIsDisplayed()
+
         weatherPage.clickRetry()
         weatherPage.assertCityName(cityName = "Moscow")
         weatherPage.assertWeatherDisplayed(
