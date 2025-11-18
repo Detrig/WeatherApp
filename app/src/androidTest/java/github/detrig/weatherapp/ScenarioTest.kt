@@ -119,7 +119,7 @@ class ScenarioTest {
                         onFoundCityClick = { foundCity: FoundCity ->
                             navController.navigate("weatherScreen")
                         },
-                        onRetry = {
+                        onRetryClick = {
                             shouldShowNoConnectionError.value = false
                         }
                     )
@@ -130,7 +130,7 @@ class ScenarioTest {
 
                     if (shouldShowError.value) {
                         shouldShowError.value = false
-                        WeatherScreenUi.NoConnectionError.Show(OnRetryClick = {
+                        WeatherScreenUi.NoConnectionError.Show(onRetryClick = {
                             shouldShowError.value = false
                         })
                     } else {
@@ -143,7 +143,7 @@ class ScenarioTest {
                                 uv = 0.4f,
                                 condition = "Sunny"
                             )
-                        ).Show(OnRetryClick = {
+                        ).Show(onRetryClick = {
                             //nothing to do
                         })
                     }
