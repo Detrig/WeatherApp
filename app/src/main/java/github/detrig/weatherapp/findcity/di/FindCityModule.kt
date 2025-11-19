@@ -9,6 +9,9 @@ import github.detrig.weatherapp.findcity.data.FindCityCloudDataSource
 import github.detrig.weatherapp.findcity.data.FindCityService
 import github.detrig.weatherapp.findcity.data.FindCityCachedDataSource
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
+import github.detrig.weatherapp.findcity.domain.FindCityResult
+import github.detrig.weatherapp.findcity.presentation.FindCityUiMapper
+import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import retrofit2.Retrofit
 import javax.inject.Named
 
@@ -33,4 +36,7 @@ abstract class FindCityBindsModule {
 
     @Binds
     abstract fun bindFindCityRepository(repository: FindCityRepository.Base): FindCityRepository
+
+    @Binds
+    abstract fun bindFindCityUiMapper(mapper: FindCityUiMapper): FindCityResult.Mapper<FoundCityUi>
 }

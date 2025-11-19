@@ -12,15 +12,20 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidTest
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
+import github.detrig.weatherapp.findcity.domain.FindCityResult
 import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.NoInternetException
 import github.detrig.weatherapp.findcity.presentation.FindCityScreen
 import github.detrig.weatherapp.findcity.presentation.FindCityScreenUi
+import github.detrig.weatherapp.findcity.presentation.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import github.detrig.weatherapp.weather.domain.WeatherInCity
 import github.detrig.weatherapp.weather.domain.WeatherRepository
+import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.presentation.WeatherScreen
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUi
+import github.detrig.weatherapp.weather.presentation.WeatherUiMapper
 import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
@@ -48,7 +53,7 @@ class ScenarioTest {
 
         val weatherMapper : WeatherResult.Mapper<WeatherScreenUi> = WeatherUiMapper()
         val weatherViewModel = WeatherViewModel(
-            mapper = weatherMapper,
+            weatherUiMapper = weatherMapper,
             repository = FakeWeatherRepository(),
             savedStateHandle = SavedStateHandle(),
             runAsync = FakeRunAsync()
@@ -129,7 +134,6 @@ class ScenarioTest {
                     val shouldShowError = rememberSaveable { mutableStateOf(true) }
 
                     if (shouldShowError.value) {
-                        shouldShowError.value = false
                         WeatherScreenUi.NoConnectionError.Show(onRetryClick = {
                             shouldShowError.value = false
                         })
@@ -144,7 +148,7 @@ class ScenarioTest {
                                 condition = "Sunny"
                             )
                         ).Show(onRetryClick = {
-                            //nothing to do
+                            shouldShowError.value = false
                         })
                     }
                 }
@@ -192,10 +196,10 @@ class FakeFindCityRepository : FindCityRepository {
         if (query.trim().isEmpty())
             throw IllegalStateException("repository should not accept empty query")
 
-        if (query == "FUCK") {
+        if (query == "FUCK" && shouldShowError) {
             shouldShowError = false
             return FindCityResult.Failed(error = NoInternetException)
-        } else {
+        } else if (query == "FUCK" && !shouldShowError) {
             return FindCityResult.Empty
         }
 

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 interface FindCityRepository {
 
-    suspend fun findCity(query: String): List<FoundCity>
+    suspend fun findCity(query: String): FindCityResult
     suspend fun saveCity(foundCity: FoundCity)
 
 
@@ -15,7 +15,7 @@ interface FindCityRepository {
         private val cachedDataSource: FindCityCachedDataSource
     ) : FindCityRepository {
 
-        override suspend fun findCity(query: String): List<FoundCity> {
+        override suspend fun findCity(query: String): FindCityResult {
             val foundCityCloud = cloudDataSource.findCity(query)
             val foundCityList = foundCityCloud.map {
                 FoundCity(
@@ -25,7 +25,7 @@ interface FindCityRepository {
                     longitude = it.longitude
                 )
             }
-            return foundCityList
+            return FindCityResult.Base(foundCityList)
         }
 
         override suspend fun saveCity(selectedCity: FoundCity) {

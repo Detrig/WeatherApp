@@ -6,23 +6,29 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.weather.domain.WeatherRepository
+import github.detrig.weatherapp.weather.domain.WeatherResult
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
+    private val weatherUiMapper: WeatherResult.Mapper<WeatherScreenUi>,
     private val repository: WeatherRepository,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
 
     val state: StateFlow<WeatherScreenUi> =
-        savedStateHandle.getStateFlow(KEY, WeatherScreenUi.Empty)
+        savedStateHandle.getStateFlow(KEY, weatherUiMapper.mapEmpty())
 
     init {
+        loadWeather()
+    }
+
+    fun loadWeather() {
         runAsync.runAsync(viewModelScope, background = {
-            val weatherInCity = repository.weather()
-            WeatherScreenUi.Base(weatherInCity)
+            val weatherResult = repository.weather()
+            weatherResult.map(weatherUiMapper)
         }) {
             savedStateHandle[KEY] = it
         }

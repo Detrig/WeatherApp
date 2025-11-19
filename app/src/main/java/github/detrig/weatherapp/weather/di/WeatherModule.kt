@@ -9,6 +9,9 @@ import github.detrig.weatherapp.weather.data.WeatherCachedDataSource
 import github.detrig.weatherapp.weather.data.WeatherCloudDataSource
 import github.detrig.weatherapp.weather.data.WeatherService
 import github.detrig.weatherapp.weather.domain.WeatherRepository
+import github.detrig.weatherapp.weather.domain.WeatherResult
+import github.detrig.weatherapp.weather.presentation.WeatherScreenUi
+import github.detrig.weatherapp.weather.presentation.WeatherUiMapper
 import retrofit2.Retrofit
 import javax.inject.Named
 
@@ -33,4 +36,7 @@ abstract class WeatherBindsModule {
 
     @Binds
     abstract fun bindWeatherRepository(repository: WeatherRepository.Base): WeatherRepository
+
+    @Binds
+    abstract fun bindWeatherUiMapper(mapper: WeatherUiMapper) : WeatherResult.Mapper<WeatherScreenUi>
 }

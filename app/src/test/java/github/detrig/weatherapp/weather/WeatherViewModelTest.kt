@@ -2,10 +2,13 @@ package github.detrig.weatherapp.weather
 
 import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.findcity.FakeRunAsync
+import github.detrig.weatherapp.findcity.domain.NoInternetException
 import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import github.detrig.weatherapp.weather.domain.WeatherInCity
 import github.detrig.weatherapp.weather.domain.WeatherRepository
+import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUi
+import github.detrig.weatherapp.weather.presentation.WeatherUiMapper
 import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +31,7 @@ class WeatherViewModelTest {
         savedStateHandle = SavedStateHandle()
         repository = FakeWeatherRepository()
         viewModel = WeatherViewModel(
-            mapper = weatherMapper,
+            weatherUiMapper = weatherMapper,
             savedStateHandle = savedStateHandle,
             repository = repository,
             runAsync = runAsync
@@ -41,7 +44,7 @@ class WeatherViewModelTest {
         assertEquals(WeatherScreenUi.Empty, state.value)
 
         val weatherForCity = WeatherInCity(
-            cityName = "Moscow city",
+            cityName = "Moscow",
             temperature = 33.1f,
             feelTemperature = 31.2f,
             windSpeed = 5.5f,

@@ -3,7 +3,10 @@ package github.detrig.weatherapp.findcity
 import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
+import github.detrig.weatherapp.findcity.domain.FindCityResult
 import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.NoInternetException
+import github.detrig.weatherapp.findcity.presentation.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import junit.framework.TestCase.assertEquals
@@ -70,13 +73,11 @@ class FindCityViewModelTest {
             ), FoundCity(name = "Moscow", latitude = 55.75, country = "USA", longitude = 37.61)
         )
         assertEquals(
-            FoundCityUi.Base(foundCityList), viewModel.state.value
+            FoundCityUi.Base(foundCityList), state.value
         )
-
 
         viewModel.saveChosenCity(foundCityList.first())
         repository.assertSaveCalled(foundCityList.first())
-
     }
 }
 
@@ -88,10 +89,10 @@ private class FakeFindCityRepository : FindCityRepository {
         if (query.trim().isEmpty())
             throw IllegalStateException("repository should not accept empty query")
 
-        if (query == "FUCK") {
+        if (query == "FUCK" && shouldShowError) {
             shouldShowError = false
             return FindCityResult.Failed(error = NoInternetException)
-        } else {
+        } else if (query == "FUCK" && !shouldShowError) {
             return FindCityResult.Empty
         }
 
