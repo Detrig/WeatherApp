@@ -18,6 +18,7 @@ class FindCityViewModelTest {
     private lateinit var repository: FakeFindCityRepository
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var runAsync: FakeRunAsync
+    private lateinit var findCityMapper: FindCityResult.Mapper<FoundCityUi>
     private lateinit var viewModel: FindCityViewModel
 
     @Before
@@ -25,7 +26,9 @@ class FindCityViewModelTest {
         repository = FakeFindCityRepository()
         savedStateHandle = SavedStateHandle()
         runAsync = FakeRunAsync()
+        findCityMapper = FindCityUiMapper()
         viewModel = FindCityViewModel(
+            mapper = findCityMapper,
             savedStateHandle = savedStateHandle,
             repository = repository,
             runAsync = runAsync
@@ -33,13 +36,30 @@ class FindCityViewModelTest {
     }
 
     @Test
-    fun findCityAndSaveIt() {
+    fun errorThenFindCityThenSaveIt() {
         val state: StateFlow<FoundCityUi> = viewModel.state
         var actual: FoundCityUi = state.value
         assertEquals(FoundCityUi.Empty, actual)
 
+        viewModel.findCity("")
+        assertEquals(FoundCityUi.Empty, state.value)
+
+        viewModel.findCity("FUCK")
+        assertEquals(
+            FoundCityUi.Empty,
+            state.value
+        ) //Сначала Empty тк результат приходит асинхронно
+        runAsync.returnResult()
+        assertEquals(FoundCityUi.NoConnectionError, state.value)
+
+        viewModel.findCity("FUCK")
+        assertEquals(FoundCityUi.NoConnectionError, state.value)
+        runAsync.returnResult()
+        assertEquals(FoundCityUi.Empty, state.value)
+
         viewModel.findCity(cityName = "Mos")
-        assertEquals(FoundCityUi.Empty, actual)
+        assertEquals(FoundCityUi.Empty, state.value)
+
         runAsync.returnResult()
         val foundCityList = listOf(
             FoundCity(
@@ -62,22 +82,37 @@ class FindCityViewModelTest {
 
 private class FakeFindCityRepository : FindCityRepository {
 
-    override suspend fun findCity(query: String): List<FoundCity> {
+    private var shouldShowError = true
+
+    override suspend fun findCity(query: String): FindCityResult { //List<FoundCity>
+        if (query.trim().isEmpty())
+            throw IllegalStateException("repository should not accept empty query")
+
+        if (query == "FUCK") {
+            shouldShowError = false
+            return FindCityResult.Failed(error = NoInternetException)
+        } else {
+            return FindCityResult.Empty
+        }
+
         if (query == "Mos")
-            return listOf(
-                FoundCity(
-                    name = "Moscow",
-                    latitude = 55.75,
-                    country = "Russia",
-                    longitude = 37.61
-                ),
-                FoundCity(
-                    name = "Moscow",
-                    latitude = 55.75,
-                    country = "USA",
-                    longitude = 37.61
+            return FindCityResult.Base(
+                listOf(
+                    FoundCity(
+                        name = "Moscow",
+                        latitude = 55.75,
+                        country = "Russia",
+                        longitude = 37.61
+                    ),
+                    FoundCity(
+                        name = "Moscow",
+                        country = "USA",
+                        latitude = 55.75,
+                        longitude = 37.61
+                    )
                 )
             )
+
         throw IllegalStateException("not supported for this test")
     }
 

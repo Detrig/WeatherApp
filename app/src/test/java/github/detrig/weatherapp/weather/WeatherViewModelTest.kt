@@ -2,6 +2,7 @@ package github.detrig.weatherapp.weather
 
 import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.findcity.FakeRunAsync
+import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import github.detrig.weatherapp.weather.domain.WeatherInCity
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUi
@@ -18,13 +19,16 @@ class WeatherViewModelTest {
     private lateinit var repository: FakeWeatherRepository
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: WeatherViewModel
+    private lateinit var weatherMapper: WeatherResult.Mapper<WeatherScreenUi>
 
     @Before
     fun setUp() {
         runAsync = FakeRunAsync()
+        weatherMapper = WeatherUiMapper()
         savedStateHandle = SavedStateHandle()
         repository = FakeWeatherRepository()
         viewModel = WeatherViewModel(
+            mapper = weatherMapper,
             savedStateHandle = savedStateHandle,
             repository = repository,
             runAsync = runAsync
@@ -32,7 +36,7 @@ class WeatherViewModelTest {
     }
 
     @Test
-    fun getWeatherInCity() {
+    fun getErrorThenGetWeatherInCity() {
         val state: StateFlow<WeatherScreenUi> = viewModel.state
         assertEquals(WeatherScreenUi.Empty, state.value)
 
@@ -46,6 +50,12 @@ class WeatherViewModelTest {
         )
 
         runAsync.returnResult()
+        assertEquals(WeatherScreenUi.NoConnectionError, state.value)
+
+        viewModel.loadWeather()
+        assertEquals(WeatherScreenUi.NoConnectionError, state.value)
+
+        runAsync.returnResult()
         assertEquals(
             WeatherScreenUi.Base(weatherForCity), state.value
         )
@@ -55,14 +65,23 @@ class WeatherViewModelTest {
 
 private class FakeWeatherRepository : WeatherRepository {
 
-    override suspend fun weather(): WeatherInCity {
-        return WeatherInCity(
-            cityName = "Moscow city",
-            temperature = 33.1f,
-            feelTemperature = 31.2f,
-            windSpeed = 5.5f,
-            uv = 0.4f,
-            condition = "Sunny"
-        )
+    private var shouldShowError = true
+
+    override suspend fun weather(): WeatherResult {
+        if (shouldShowError) {
+            shouldShowError = false
+            return WeatherResult.Failed(error = NoInternetException)
+        } else {
+            return WeatherResult.Base(
+                WeatherInCity(
+                    cityName = "Moscow",
+                    temperature = 33.1f,
+                    feelTemperature = 31.2f,
+                    windSpeed = 5.5f,
+                    uv = 0.4f,
+                    condition = "Sunny"
+                )
+            )
+        }
     }
 }
