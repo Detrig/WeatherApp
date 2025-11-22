@@ -15,17 +15,23 @@ interface FindCityRepository {
         private val cachedDataSource: FindCityCachedDataSource
     ) : FindCityRepository {
 
+        //Ловит высокоуровневые ошибки и оборачивает Result
         override suspend fun findCity(query: String): FindCityResult {
-            val foundCityCloud = cloudDataSource.findCity(query)
-            val foundCityList = foundCityCloud.map {
-                FoundCity(
-                    name = it.name,
-                    country = it.country,
-                    latitude = it.latitude,
-                    longitude = it.longitude
-                )
+            try {
+                val foundCityCloud = cloudDataSource.findCity(query)
+                if (foundCityCloud.isEmpty()) return FindCityResult.Empty
+                val foundCityList = foundCityCloud.map {
+                    FoundCity(
+                        name = it.name,
+                        country = it.country,
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                }
+                return FindCityResult.Base(foundCityList)
+            } catch (e: DomainException) {
+                return FindCityResult.Failed(e)
             }
-            return FindCityResult.Base(foundCityList)
         }
 
         override suspend fun saveCity(selectedCity: FoundCity) {

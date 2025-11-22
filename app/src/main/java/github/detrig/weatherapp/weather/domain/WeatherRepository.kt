@@ -17,7 +17,7 @@ interface WeatherRepository {
     ) : WeatherRepository {
 
         override suspend fun weather(): WeatherResult {
-   //         try {
+            try {
                 val (latitude, longitude, cityName) = cachedDataSource.getCityParams()
                 val result = weatherCloudDataSource.getWeather(latitude, longitude)
                 Log.d("alz-04", "result: $result")
@@ -31,9 +31,9 @@ interface WeatherRepository {
                         condition = result.currentWeather.condition.text
                     )
                 )
-    //        } catch (e: DomainException) {
-                //todo return WeatherResult.Failed(e)
-           // }
+            } catch (e: DomainException) {
+                return WeatherResult.Failed(e)
+            }
         }
 
     }

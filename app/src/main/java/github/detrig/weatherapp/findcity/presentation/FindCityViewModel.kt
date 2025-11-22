@@ -26,12 +26,12 @@ class FindCityViewModel @Inject constructor(
         if (cityName.trim().isEmpty())
             savedStateHandle[KEY] = mapper.mapEmpty()
         else
-        runAsync.runAsync(viewModelScope, {
-            val foundCity = repository.findCity(cityName).map(mapper)
-            foundCity
-        }) {
-            savedStateHandle[KEY] = it
-        }
+            runAsync.runAsync(viewModelScope, {
+                val foundCity = repository.findCity(cityName).map(mapper)
+                foundCity
+            }) {
+                savedStateHandle[KEY] = it
+            }
     }
 
     fun saveChosenCity(foundCity: FoundCity) {
