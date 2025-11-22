@@ -2,8 +2,8 @@ package github.detrig.weatherapp.weather
 
 import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.findcity.FakeRunAsync
+import github.detrig.weatherapp.findcity.domain.FoundCity
 import github.detrig.weatherapp.findcity.domain.NoInternetException
-import github.detrig.weatherapp.findcity.presentation.FoundCityUi
 import github.detrig.weatherapp.weather.domain.WeatherInCity
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
@@ -69,6 +69,7 @@ class WeatherViewModelTest {
 private class FakeWeatherRepository : WeatherRepository {
 
     private var shouldShowError = true
+    private var savedCity: FoundCity? = null
 
     override suspend fun weather(): WeatherResult {
         if (shouldShowError) {
@@ -86,5 +87,15 @@ private class FakeWeatherRepository : WeatherRepository {
                 )
             )
         }
+    }
+
+    override suspend fun getSavedCity(): FoundCity {
+        savedCity = FoundCity(
+            name = "Moscow",
+            latitude = 55.75f,
+            country = "Russia",
+            longitude = 37.61f
+        )
+        return savedCity!!
     }
 }

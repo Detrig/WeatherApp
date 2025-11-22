@@ -9,7 +9,6 @@ interface FindCityRepository {
     suspend fun findCity(query: String): FindCityResult
     suspend fun saveCity(foundCity: FoundCity)
 
-
     class Base @Inject constructor(
         private val cloudDataSource: FindCityCloudDataSource,
         private val cachedDataSource: FindCityCachedDataSource
@@ -42,6 +41,5 @@ interface FindCityRepository {
                 selectedCity.longitude
             )
         }
-
     }
 }

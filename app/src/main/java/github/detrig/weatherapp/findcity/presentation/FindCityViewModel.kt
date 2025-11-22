@@ -27,6 +27,7 @@ class FindCityViewModel @Inject constructor(
             savedStateHandle[KEY] = mapper.mapEmpty()
         else
             runAsync.runAsync(viewModelScope, {
+                savedStateHandle[KEY] = mapper.mapLoading()
                 val foundCity = repository.findCity(cityName).map(mapper)
                 foundCity
             }) {

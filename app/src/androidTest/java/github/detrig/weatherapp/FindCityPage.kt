@@ -14,6 +14,7 @@ class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
     private val retryButton = composeTestRule.onNodeWithTag("retryButton")
     private val inputField = composeTestRule.onNodeWithTag("findCityInputField")
     private val foundCityUi = composeTestRule.onNodeWithTag("foundCityListUi", useUnmergedTree = true)
+    private val loading = composeTestRule.onNodeWithTag("CircleLoading", useUnmergedTree = true)
 
     fun input(text: String) {
         inputField.performTextReplacement(text)
@@ -39,5 +40,9 @@ class FindCityPage(private val composeTestRule: ComposeContentTestRule) {
         noConnectionError.assertDoesNotExist()
         retryButton.assertDoesNotExist()
         foundCityUi.assertDoesNotExist()
+    }
+
+    fun assertLoadingIsDisplayed() {
+        loading.assertIsDisplayed()
     }
 }

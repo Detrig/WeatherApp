@@ -2,6 +2,7 @@ package github.detrig.weatherapp.findcity.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -101,12 +103,25 @@ interface FoundCityUi : Serializable {
         override fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit) {
             //todo Button(onClick = onfoundCityClick.invoke(foundcity)
 
-            LazyColumn(Modifier.testTag("foundityListUi")) {
+            LazyColumn(Modifier.testTag("foundСityListUi")) {
                 items(foundCityList) {
                     CityListItem(onFoundCityClick, it)
                 }
             }
         }
+    }
+
+    data object Loading : FoundCityUi {
+        private fun readResolve(): Any = Loading
+
+        @Composable
+        override fun Show(
+            onFoundCityClick: (FoundCity) -> Unit,
+            onRetryClick: () -> Unit
+        ) {
+            LoadingUi()
+        }
+
     }
 
     data object NoConnectionError : FoundCityUi {
@@ -132,10 +147,27 @@ interface FoundCityUi : Serializable {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(text = stringResource(R.string.no_internet_connection))
                 Spacer(modifier = Modifier.height(24.dp))
-                Button(onClick = onRetryClick, modifier = Modifier.testTag("retryButton").width(128.dp)) {
+                Button(
+                    onClick = onRetryClick,
+                    modifier = Modifier
+                        .testTag("retryButton")
+                        .width(128.dp)
+                ) {
                     Text(text = stringResource(R.string.retry))
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun LoadingUi() {
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxWidth().testTag("CircleLoading"),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
         }
     }
 }
@@ -188,20 +220,20 @@ fun PreviewNotEmptyFindCityScreenUi() {
                 FoundCity(
                     name = "Moscow",
                     country = "Russia",
-                    latitude = 55.75,
-                    longitude = 37.61
+                    latitude = 55.75f,
+                    longitude = 37.61f
                 ),
                 FoundCity(
                     name = "Moscow",
                     country = "USA",
-                    latitude = 55.75,
-                    longitude = 37.61
+                    latitude = 55.75f,
+                    longitude = 37.61f
                 ),
                 FoundCity(
                     name = "Moscow",
                     country = "Russia",
-                    latitude = 55.75,
-                    longitude = 37.61
+                    latitude = 55.75f,
+                    longitude = 37.61f
                 ),
             )
         ), onFoundCityClick = {}, onRetryClick = { }

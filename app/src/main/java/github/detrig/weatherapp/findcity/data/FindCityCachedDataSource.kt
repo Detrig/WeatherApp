@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 interface FindCityCachedDataSource {
 
-    suspend fun save(cityName: String, country: String, latitude: Double, longitude: Double)
+    suspend fun save(cityName: String, country: String, latitude: Float, longitude: Float)
 
     class Base @Inject constructor(
         @ApplicationContext context: Context,
@@ -18,8 +18,8 @@ interface FindCityCachedDataSource {
         override suspend fun save(
             cityName: String,
             country: String,
-            latitude: Double,
-            longitude: Double
+            latitude: Float,
+            longitude: Float
         ) {
             sharedPreferences.edit() {
                 putString(NAME, cityName)

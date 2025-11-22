@@ -49,28 +49,28 @@ class FindCityViewModelTest {
 
         viewModel.findCity("FUCK")
         assertEquals(
-            FoundCityUi.Empty,
+            FoundCityUi.Loading,
             state.value
         ) //Сначала Empty тк результат приходит асинхронно
         runAsync.returnResult()
         assertEquals(FoundCityUi.NoConnectionError, state.value)
 
         viewModel.findCity("FUCK")
-        assertEquals(FoundCityUi.NoConnectionError, state.value)
+        assertEquals(FoundCityUi.Loading, state.value)
         runAsync.returnResult()
         assertEquals(FoundCityUi.Empty, state.value)
 
         viewModel.findCity(cityName = "Mos")
-        assertEquals(FoundCityUi.Empty, state.value)
+        assertEquals(FoundCityUi.Loading, state.value)
 
         runAsync.returnResult()
         val foundCityList = listOf(
             FoundCity(
                 name = "Moscow",
-                latitude = 55.75,
+                latitude = 55.75f,
                 country = "Russia",
-                longitude = 37.61
-            ), FoundCity(name = "Moscow", latitude = 55.75, country = "USA", longitude = 37.61)
+                longitude = 37.61f
+            ), FoundCity(name = "Moscow", latitude = 55.75f, country = "USA", longitude = 37.61f)
         )
         assertEquals(
             FoundCityUi.Base(foundCityList), state.value
@@ -101,15 +101,15 @@ private class FakeFindCityRepository : FindCityRepository {
                 listOf(
                     FoundCity(
                         name = "Moscow",
-                        latitude = 55.75,
+                        latitude = 55.75f,
                         country = "Russia",
-                        longitude = 37.61
+                        longitude = 37.61f
                     ),
                     FoundCity(
                         name = "Moscow",
                         country = "USA",
-                        latitude = 55.75,
-                        longitude = 37.61
+                        latitude = 55.75f,
+                        longitude = 37.61f
                     )
                 )
             )

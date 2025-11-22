@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.weather.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +33,14 @@ import github.detrig.weatherapp.weather.domain.WeatherInCity
 import java.io.Serializable
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel) {
+fun WeatherScreen(viewModel: WeatherViewModel, navigateToFindCityScreen: () -> Unit) {
 
     val weatherScreenUi = viewModel.state.collectAsStateWithLifecycle()
     weatherScreenUi.value.Show(onRetryClick = viewModel::loadWeather)
+
+    BackHandler {
+        navigateToFindCityScreen.invoke()
+    }
 }
 
 interface WeatherScreenUi : Serializable {
@@ -122,7 +127,7 @@ interface WeatherScreenUi : Serializable {
 
     }
 
-    data object NoConnectionError: WeatherScreenUi {
+    data object NoConnectionError : WeatherScreenUi {
         private fun readResolve(): Any = NoConnectionError
 
         @Composable
@@ -142,7 +147,12 @@ interface WeatherScreenUi : Serializable {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(text = stringResource(R.string.no_internet_connection))
                 Spacer(modifier = Modifier.height(24.dp))
-                Button(onClick = onRetryClick, modifier = Modifier.testTag("retryButton").width(128.dp)) {
+                Button(
+                    onClick = onRetryClick,
+                    modifier = Modifier
+                        .testTag("retryButton")
+                        .width(128.dp)
+                ) {
                     Text(text = stringResource(R.string.retry))
                 }
             }
@@ -155,7 +165,7 @@ interface WeatherScreenUi : Serializable {
 @Composable
 fun PreviewWeatherNoInternetScreenUi() {
     WeatherScreenUi.NoConnectionError
-    .Show(onRetryClick = {})
+        .Show(onRetryClick = {})
 }
 
 @Preview(showBackground = true)

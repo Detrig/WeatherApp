@@ -29,6 +29,7 @@ import github.detrig.weatherapp.weather.presentation.WeatherUiMapper
 import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,6 +42,12 @@ class ScenarioTest {
     @get:Rule
     val composeTestRule = createComposeRule()   //чтобы могли создавать composable в ui тестах
 
+    private lateinit var fakeRunAsync : FakeRunAsync
+    @Before
+    fun setUp() {
+        fakeRunAsync = FakeRunAsync()
+    }
+
     @Test
     fun findCityAndShowWeather(): Unit = with(composeTestRule) {
         val findCityMapper: FindCityResult.Mapper<FoundCityUi> = FindCityUiMapper()
@@ -48,7 +55,7 @@ class ScenarioTest {
             mapper = findCityMapper,
             repository = FakeFindCityRepository(),
             savedStateHandle = SavedStateHandle(),
-            runAsync = FakeRunAsync()
+            runAsync = fakeRunAsync
         )
 
         val weatherMapper : WeatherResult.Mapper<WeatherScreenUi> = WeatherUiMapper()
@@ -56,7 +63,7 @@ class ScenarioTest {
             weatherUiMapper = weatherMapper,
             repository = FakeWeatherRepository(),
             savedStateHandle = SavedStateHandle(),
-            runAsync = FakeRunAsync()
+            runAsync = fakeRunAsync
         )
 
         setContent {
@@ -73,7 +80,10 @@ class ScenarioTest {
 
                 composable("weatherScreen") {
                     WeatherScreen(
-                        viewModel = weatherViewModel
+                        viewModel = weatherViewModel,
+                        navigateToFindCityScreen =  {
+                            navController.navigate("findCityScreen")
+                        }
                     )
                 }
             }
@@ -110,14 +120,14 @@ class ScenarioTest {
                                     FoundCity(
                                         name = "Moscow",
                                         country = "Russia",
-                                        latitude = 55.75,
-                                        longitude = 37.61
+                                        latitude = 55.75f,
+                                        longitude = 37.61f
                                     ),
                                     FoundCity(
                                         name = "Moscow",
                                         country = "USA",
-                                        latitude = 55.75,
-                                        longitude = 37.61
+                                        latitude = 55.75f,
+                                        longitude = 37.61f
                                     )
                                 )
                             ),
@@ -208,15 +218,15 @@ class FakeFindCityRepository : FindCityRepository {
                 listOf(
                     FoundCity(
                         name = "Moscow",
-                        latitude = 55.75,
+                        latitude = 55.75f,
                         country = "Russia",
-                        longitude = 37.61
+                        longitude = 37.61f
                     ),
                     FoundCity(
                         name = "Moscow",
                         country = "USA",
-                        latitude = 55.75,
-                        longitude = 37.61
+                        latitude = 55.75f,
+                        longitude = 37.61f
                     )
                 )
             )
@@ -228,8 +238,8 @@ class FakeFindCityRepository : FindCityRepository {
         if (foundCity != FoundCity(
                 name = "Moscow",
                 country = "Russia",
-                latitude = 55.75,
-                longitude = 37.61
+                latitude = 55.75f,
+                longitude = 37.61f
             )
         )
             throw IllegalStateException("save called with wrong argument $foundCity")
@@ -239,6 +249,7 @@ class FakeFindCityRepository : FindCityRepository {
 private class FakeWeatherRepository : WeatherRepository {
 
     private var shouldShowError = true
+    private var savedCity: FoundCity? = null
 
     override suspend fun weather(): WeatherResult {
         if (shouldShowError) {
@@ -257,25 +268,36 @@ private class FakeWeatherRepository : WeatherRepository {
             )
         }
     }
+
+    override suspend fun getSavedCity(): FoundCity {
+        savedCity = FoundCity(
+            name = "Moscow",
+            latitude = 55.75f,
+            country = "Russia",
+            longitude = 37.61f
+        )
+        return savedCity!!
+    }
 }
 
 class FakeRunAsync : RunAsync {
 
-    private lateinit var resultCached: Any
-    private lateinit var uiCached: (Any) -> Unit
+    private var backgroundCached: (suspend () -> Any)? = null
+    private var uiCached: ((Any) -> Unit)? = null
 
     override fun <T : Any> runAsync(
         scope: CoroutineScope,
         background: suspend () -> T,
         ui: (T) -> Unit
     ) {
-        runBlocking {
-            val result = background()
-            ui(result)
-        }
+        backgroundCached = background
+        uiCached = { any -> ui(any as T) }
     }
 
-    fun returnResult() {
-        uiCached.invoke(resultCached)
+    suspend fun returnResult() {
+        val bg = backgroundCached ?: error("Background not set")
+        val ui = uiCached ?: error("Ui not set")
+        val result = bg()
+        ui(result)
     }
 }

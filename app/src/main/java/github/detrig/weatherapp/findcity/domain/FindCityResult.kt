@@ -12,6 +12,8 @@ interface FindCityResult {
 
         fun mapEmpty(): T
 
+        fun mapLoading(): T
+
         fun mapNoInternetError(): T
     }
 
@@ -30,15 +32,20 @@ interface FindCityResult {
                 return mapper.mapNoInternetError()
             else
                 TODO()
-                //return mapper.mapGenericError()
+            //return mapper.mapGenericError()
         }
 
     }
 
-    data object Empty: FindCityResult {
+    data object Empty : FindCityResult {
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
             return mapper.mapEmpty()
         }
+    }
 
+    data object Loading: FindCityResult {
+        override fun <T : Serializable> map(mapper: Mapper<T>): T {
+            return mapper.mapLoading()
+        }
     }
 }
