@@ -1,10 +1,11 @@
-package github.detrig.weatherapp.core
+package github.detrig.weatherapp.core.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import github.detrig.weatherapp.core.RunAsync
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level

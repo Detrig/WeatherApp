@@ -6,26 +6,31 @@ import javax.inject.Inject
 
 interface FindCityRepository {
 
-    suspend fun findCity(query: String): List<FoundCity>
+    suspend fun findCity(query: String): FindCityResult
     suspend fun saveCity(foundCity: FoundCity)
-
 
     class Base @Inject constructor(
         private val cloudDataSource: FindCityCloudDataSource,
         private val cachedDataSource: FindCityCachedDataSource
     ) : FindCityRepository {
 
-        override suspend fun findCity(query: String): List<FoundCity> {
-            val foundCityCloud = cloudDataSource.findCity(query)
-            val foundCityList = foundCityCloud.map {
-                FoundCity(
-                    name = it.name,
-                    country = it.country,
-                    latitude = it.latitude,
-                    longitude = it.longitude
-                )
+        //Ловит высокоуровневые ошибки и оборачивает Result
+        override suspend fun findCity(query: String): FindCityResult {
+            try {
+                val foundCityCloud = cloudDataSource.findCity(query)
+                if (foundCityCloud.isEmpty()) return FindCityResult.Empty
+                val foundCityList = foundCityCloud.map {
+                    FoundCity(
+                        name = it.name,
+                        country = it.country,
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    )
+                }
+                return FindCityResult.Base(foundCityList)
+            } catch (e: DomainException) {
+                return FindCityResult.Failed(e)
             }
-            return foundCityList
         }
 
         override suspend fun saveCity(selectedCity: FoundCity) {
@@ -36,6 +41,5 @@ interface FindCityRepository {
                 selectedCity.longitude
             )
         }
-
     }
 }
