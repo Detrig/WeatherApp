@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.findcity.domain
 
+import android.util.Log
 import github.detrig.weatherapp.findcity.data.FindCityCachedDataSource
 import github.detrig.weatherapp.findcity.data.FindCityCloudDataSource
 import javax.inject.Inject
@@ -14,8 +15,9 @@ interface FindCityRepository {
         private val cachedDataSource: FindCityCachedDataSource
     ) : FindCityRepository {
 
-        //Ловит высокоуровневые ошибки и оборачивает Result
+        //Ловит высокоуровневые ошибки и оборачивает в Result
         override suspend fun findCity(query: String): FindCityResult {
+            Log.d("alz-04", "query: $query")
             try {
                 val foundCityCloud = cloudDataSource.findCity(query)
                 if (foundCityCloud.isEmpty()) return FindCityResult.Empty

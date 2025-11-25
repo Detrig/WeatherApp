@@ -89,7 +89,7 @@ class ScenarioTest {
             }
         }
 
-        startUiTest()
+        startUiTest() //todo make fun startUiTestWithLoading() using runAsync returnResult()
     }
 
     @Test

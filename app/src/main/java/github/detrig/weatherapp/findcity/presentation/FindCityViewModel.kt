@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.findcity.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,6 +41,24 @@ class FindCityViewModel @Inject constructor(
             repository.saveCity(foundCity)
         }) {
 
+        }
+    }
+
+    fun findCityByLocation(lat: Double, lon: Double, onComplete: () -> Unit) {
+        Log.d("alz-04", "lat: $lat, lon: $lon")
+        runAsync.runAsync(viewModelScope, background = {
+            savedStateHandle[KEY] = mapper.mapLoading()
+
+            val foundCityResult = repository.findCity("$lat,$lon")
+
+            if (foundCityResult is FindCityResult.Base && foundCityResult.foundCity.isNotEmpty()) {
+                val foundCityByGeo = foundCityResult.foundCity.first()
+                repository.saveCity(foundCityByGeo)
+            }
+            foundCityResult.map(mapper)
+        }) {
+            savedStateHandle[KEY] = it
+            onComplete.invoke()
         }
     }
 

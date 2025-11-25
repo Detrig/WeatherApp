@@ -31,7 +31,7 @@ class CoreModule {
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = Level.BODY //TODO change to Level.NONE
+            level = Level.BASIC//TODO change to Level.NONE
         }
     }
 
