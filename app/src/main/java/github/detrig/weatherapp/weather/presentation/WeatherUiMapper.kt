@@ -14,8 +14,16 @@ class WeatherUiMapper @Inject constructor(): WeatherResult.Mapper<WeatherScreenU
         return WeatherScreenUi.Empty
     }
 
-    override fun mapFailed(): WeatherScreenUi {
+    override fun mapNoInternetError(): WeatherScreenUi {
         return WeatherScreenUi.NoConnectionError
+    }
+
+    override fun mapGenericError(): WeatherScreenUi {
+        return WeatherScreenUi.GenericError
+    }
+
+    override fun mapLoading(): WeatherScreenUi {
+        return WeatherScreenUi.Loading
     }
 
 }

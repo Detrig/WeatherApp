@@ -1,6 +1,7 @@
 package github.detrig.weatherapp.findcity.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +36,8 @@ import java.io.Serializable
 @Composable
 fun FindCityScreen(
     viewModel: FindCityViewModel,
-    navigateToWeatherScreen: () -> Unit
+    navigateToWeatherScreen: () -> Unit,
+    onGetLocationClick: () -> Unit = {}
 ) {
     val input = rememberSaveable { mutableStateOf("") }
     val foundCityUi = viewModel.state.collectAsStateWithLifecycle()
@@ -55,7 +57,8 @@ fun FindCityScreen(
         },
         onRetryClick = {
             viewModel.findCity(cityName = input.value)
-        }
+        },
+        onGetLocationClick = onGetLocationClick
     )
 }
 
@@ -65,10 +68,11 @@ fun FindCityScreenUi(
     onInputChange: (String) -> Unit,
     foundCityUi: FoundCityUi,
     onFoundCityClick: (FoundCity) -> Unit,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
+    onGetLocationClick: () -> Unit = {}
 ) {
 
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         OutlinedTextField(
             modifier = Modifier
                 .testTag("findCityInputField")
@@ -79,6 +83,13 @@ fun FindCityScreenUi(
             onValueChange = onInputChange,
         )
         foundCityUi.Show(onFoundCityClick, onRetryClick)
+        Button(
+            onClick = onGetLocationClick, modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            Text(text = stringResource(R.string.get_location))
+        }
     }
 }
 
@@ -92,9 +103,7 @@ interface FoundCityUi : Serializable {
         private fun readResolve(): Any = Empty
 
         @Composable
-        override fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit) {
-
-        }
+        override fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit) = Unit
     }
 
     data class Base(private val foundCityList: List<FoundCity>) : FoundCityUi {
@@ -122,6 +131,41 @@ interface FoundCityUi : Serializable {
             LoadingUi()
         }
 
+    }
+
+    data object GenericError : FoundCityUi {
+        private fun readResolve(): Any = GenericError
+
+        @Composable
+        override fun Show(
+            onFoundCityClick: (FoundCity) -> Unit,
+            onRetryClick: () -> Unit
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("genericErrorLayer"),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.sad),
+                    modifier = Modifier.size(128.dp),
+                    contentDescription = stringResource(R.string.unexpected_error)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = stringResource(R.string.unexpected_error))
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    onClick = onRetryClick,
+                    modifier = Modifier
+                        .testTag("retryButton")
+                        .width(128.dp)
+                ) {
+                    Text(text = stringResource(R.string.retry))
+                }
+            }
+        }
     }
 
     data object NoConnectionError : FoundCityUi {
@@ -164,7 +208,9 @@ interface FoundCityUi : Serializable {
 fun LoadingUi() {
     Box(Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxWidth().testTag("CircleLoading"),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("CircleLoading"),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator()
@@ -194,7 +240,8 @@ fun PreviewEmptyFindCityScreenUi() {
         input = "",
         onInputChange = {},
         foundCityUi = FoundCityUi.Empty,
-        onFoundCityClick = {}) {
+        onFoundCityClick = {},
+        onRetryClick = {}) {
 
     }
 }
@@ -206,7 +253,8 @@ fun PreviewNoInternetConnectionFindCityScreenUi() {
         input = "mos",
         onInputChange = {},
         foundCityUi = FoundCityUi.NoConnectionError,
-        onFoundCityClick = {}) {
+        onFoundCityClick = {},
+        onRetryClick = {}) {
     }
 }
 
@@ -236,6 +284,6 @@ fun PreviewNotEmptyFindCityScreenUi() {
                     longitude = 37.61f
                 ),
             )
-        ), onFoundCityClick = {}, onRetryClick = { }
+        ), onFoundCityClick = {}, onRetryClick = { }, onGetLocationClick = {}
     )
 }

@@ -16,10 +16,7 @@ interface RunAsync {
     )
 
     @Singleton
-    class Base @Inject constructor(
-
-    ) : RunAsync {
-
+    class Base @Inject constructor() : RunAsync {
         override fun <T : Any> runAsync(
             scope: CoroutineScope,
             background: suspend () -> T,
@@ -32,6 +29,5 @@ interface RunAsync {
                 }
             }
         }
-
     }
 }

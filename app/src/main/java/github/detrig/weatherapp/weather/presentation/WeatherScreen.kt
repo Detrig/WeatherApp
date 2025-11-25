@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import github.detrig.weatherapp.R
 import github.detrig.weatherapp.weather.domain.WeatherInCity
@@ -84,26 +86,54 @@ interface WeatherScreenUi : Serializable {
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Row {
-                        Text(
-                            text = cityParams.temperature.toString(),
+                        Column(
                             modifier = Modifier
-                                .weight(1f)
-                                .testTag("Weather"),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            text = cityParams.feelTemperature.toString(),
+                                .weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = stringResource(R.string.temp),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 10.sp
+
+                            )
+                            Text(
+                                text = cityParams.temperature.toString(),
+                                modifier = Modifier.testTag("Weather"),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                        Column(
                             modifier = Modifier
-                                .weight(1f)
-                                .testTag("FeelTemp"),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                                .weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = stringResource(R.string.feelTemp),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 10.sp
+                            )
+                            Text(
+                                text = cityParams.feelTemperature.toString(),
+                                modifier = Modifier.testTag("FeelTemp"),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
 
+                    Text(
+                        text = stringResource(R.string.windSpeed),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 10.sp
+                    )
                     Text(
                         text = cityParams.windSpeed.toString(),
                         modifier = Modifier
@@ -114,6 +144,13 @@ interface WeatherScreenUi : Serializable {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
+                    Text(
+                        text = stringResource(R.string.uv),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 10.sp
+                    )
                     Text(
                         text = cityParams.uv.toString(),
                         modifier = Modifier
@@ -159,7 +196,65 @@ interface WeatherScreenUi : Serializable {
         }
 
     }
+
+    data object Loading: WeatherScreenUi {
+        private fun readResolve(): Any = Loading
+
+        @Composable
+        override fun Show(onRetryClick: () -> Unit) {
+            LoadingUi()
+        }
+
+    }
+
+    data object GenericError : WeatherScreenUi {
+        private fun readResolve(): Any = GenericError
+
+        @Composable
+        override fun Show(onRetryClick: () -> Unit) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("genericErrorLayer"),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.sad),
+                    modifier = Modifier.size(128.dp),
+                    contentDescription = stringResource(R.string.unexpected_error)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = stringResource(R.string.unexpected_error))
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    onClick = onRetryClick,
+                    modifier = Modifier
+                        .testTag("retryButton")
+                        .width(128.dp)
+                ) {
+                    Text(text = stringResource(R.string.retry))
+                }
+            }
+        }
+
+    }
 }
+
+@Composable
+fun LoadingUi() {
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("CircleLoading"),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
@@ -206,5 +301,6 @@ private fun backgroundForCondition(condition: String): Modifier {
 
     return Modifier
         .background(color)
+        //.paint(painter = painterResource(R.drawable.no_internet), contentScale = ContentScale.Crop)
         .testTag(testTag)
 }

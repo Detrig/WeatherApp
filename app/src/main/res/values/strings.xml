@@ -3,4 +3,12 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="retry">Retry</string>
     <string name="loading">Wait for a second</string>
+    <string name="temp">Temp</string>
+    <string name="feelTemp">Feel temp</string>
+    <string name="windSpeed">Wind speed</string>
+    <string name="uv">Uv</string>
+    <string name="get_location">Use current location</string>
+    <string name="geo_error">Error while getting geo</string>
+    <string name="error_granted_permission">Geo permission not granted</string>
+    <string name="unexpected_error">An unexpected error has occurred</string>
 </resources>

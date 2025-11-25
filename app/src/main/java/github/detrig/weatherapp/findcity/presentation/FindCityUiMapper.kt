@@ -21,4 +21,8 @@ class FindCityUiMapper @Inject constructor() : FindCityResult.Mapper<FoundCityUi
     override fun mapNoInternetError(): FoundCityUi {
         return FoundCityUi.NoConnectionError
     }
+
+    override fun mapGenericError(): FoundCityUi {
+        return FoundCityUi.GenericError
+    }
 }
