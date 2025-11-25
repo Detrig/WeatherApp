@@ -2,24 +2,16 @@ package github.detrig.weatherapp.weather.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,11 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import github.detrig.weatherapp.R
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
+import github.detrig.weatherapp.weather.presentation.ui.AirQualityUi
+import github.detrig.weatherapp.weather.presentation.ui.LoadingUi
+import github.detrig.weatherapp.weather.presentation.ui.WeatherUi
 import java.io.Serializable
 
 interface WeatherScreenUiState : Serializable {
@@ -61,7 +54,7 @@ interface WeatherScreenUiState : Serializable {
             ) {
                 WeatherUi(weatherUi)
                 Spacer(modifier = Modifier.height(16.dp))
-                //AirQualityUi(weatherUi.airQuality)
+                AirQualityUi(weatherUi.airQuality)
             }
         }
     }
@@ -141,124 +134,6 @@ interface WeatherScreenUiState : Serializable {
     }
 }
 
-@Composable
-fun WeatherUi(cityParams: WeatherInCityUi) {
-
-    Box(
-        modifier = Modifier
-            .testTag("WeatherBackground")
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(8.dp)
-        ) {
-            Text(
-                text = cityParams.cityName,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("City"),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row {
-                Column(
-                    modifier = Modifier
-                        .weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(R.string.temp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 10.sp
-
-                    )
-                    Text(
-                        text = cityParams.temperature,
-                        modifier = Modifier.testTag("Weather"),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = stringResource(R.string.feelTemp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontSize = 10.sp
-                    )
-                    Text(
-                        text = cityParams.feelTemperature,
-                        modifier = Modifier.testTag("FeelTemp"),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = stringResource(R.string.windSpeed),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp
-            )
-            Text(
-                text = cityParams.wind,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("WindSpeed"),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(R.string.uv),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 10.sp
-            )
-            Text(
-                text = cityParams.uv,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("Uv"),
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-fun LoadingUi() {
-    Box(Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("CircleLoading"),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-}
 
 @Composable
 private fun backgroundForCondition(condition: String): Modifier {

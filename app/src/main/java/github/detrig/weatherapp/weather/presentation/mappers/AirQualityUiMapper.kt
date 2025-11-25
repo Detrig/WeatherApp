@@ -1,15 +1,17 @@
-package github.detrig.weatherapp.weather.presentation.models
+package github.detrig.weatherapp.weather.presentation.mappers
 
 import androidx.compose.ui.graphics.Color
 import github.detrig.weatherapp.R
 import github.detrig.weatherapp.weather.domain.models.AirQuality
+import github.detrig.weatherapp.weather.presentation.models.AirQualityUiModel
+import github.detrig.weatherapp.weather.presentation.models.ParameterUi
 import javax.inject.Inject
 
 interface AirQualityUiMapper {
-    fun map(domain: AirQuality): AirQualityUi
+    fun map(domain: AirQuality): AirQualityUiModel
 
     class Base @Inject constructor() : AirQualityUiMapper {
-        override fun map(domain: AirQuality): AirQualityUi {
+        override fun map(domain: AirQuality): AirQualityUiModel {
             val pm25Level = MapAirParams.dangerLevelForPm25(domain.pm25)
 
             val title = when (pm25Level) {
@@ -49,7 +51,7 @@ interface AirQualityUiMapper {
             }
 
 
-            return AirQualityUi(
+            return AirQualityUiModel(
                 title = title,
                 subtitle = subtitle,
                 color = overallColor,
@@ -61,10 +63,7 @@ interface AirQualityUiMapper {
                 co = MapAirParams.mapCo(domain.co),
             )
         }
-
     }
-
-
 }
 
 enum class DangerLevel {
@@ -140,11 +139,11 @@ object MapAirParams {
 
     fun dangerLevelForPm25(pm25: Float): DangerLevel =
         when {
-            pm25 <= 10f -> DangerLevel.GOOD
-            pm25 <= 25f -> DangerLevel.MODERATE
-            pm25 <= 50f -> DangerLevel.UNHEALTHY_SENSITIVE
-            pm25 <= 75f -> DangerLevel.UNHEALTHY
-            pm25 <= 100f -> DangerLevel.VERY_UNHEALTHY
+            pm25 <= 12f -> DangerLevel.GOOD
+            pm25 <= 35.4f -> DangerLevel.MODERATE
+            pm25 <= 55.4f -> DangerLevel.UNHEALTHY_SENSITIVE
+            pm25 <= 150.4f -> DangerLevel.UNHEALTHY
+            pm25 <= 250.4f -> DangerLevel.VERY_UNHEALTHY
             else -> DangerLevel.HAZARDOUS
         }
 

@@ -12,7 +12,7 @@ interface WeatherService {
     https://api.weatherapi.com/v1/current.json?key=7f63ebcffd214161b8794516250611&q=48.854,2.3508&aqi=yes
      **/
 
-    @GET("current.jso")
+    @GET("current.json")
     suspend fun getWeather(
         @Query("key") apiKey: String,
         @Query("q") query: String, //"${lat},${lon}"

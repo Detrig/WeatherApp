@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 
-data class AirQualityUi(
+data class AirQualityUiModel(
     @StringRes val title: Int,
     val subtitle: String,
     val color: Color,

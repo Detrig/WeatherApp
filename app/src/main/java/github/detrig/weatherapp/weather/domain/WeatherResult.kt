@@ -40,7 +40,6 @@ interface WeatherResult {
             }
     }
 
-
     data object Empty : WeatherResult {
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
             return mapper.mapEmpty()

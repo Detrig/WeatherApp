@@ -12,7 +12,7 @@ import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
 import github.detrig.weatherapp.weather.presentation.mappers.WeatherUiMapper
-import github.detrig.weatherapp.weather.presentation.models.AirQualityUiMapper
+import github.detrig.weatherapp.weather.presentation.mappers.AirQualityUiMapper
 import retrofit2.Retrofit
 import javax.inject.Named
 

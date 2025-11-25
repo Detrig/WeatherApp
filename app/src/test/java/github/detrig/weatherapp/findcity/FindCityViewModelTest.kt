@@ -6,7 +6,7 @@ import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
 import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.core.NoInternetException
-import github.detrig.weatherapp.findcity.presentation.FindCityUiMapper
+import github.detrig.weatherapp.findcity.presentation.mappers.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.findcity.presentation.FoundCityScreenUiState
 import junit.framework.TestCase.assertEquals

@@ -3,7 +3,6 @@ package github.detrig.weatherapp.weather.presentation.mappers
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.models.WeatherInCity
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
-import github.detrig.weatherapp.weather.presentation.models.AirQualityUiMapper
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 import javax.inject.Inject
 

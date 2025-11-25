@@ -15,7 +15,7 @@ data class AirQualityCloud(
     @SerializedName("so2")
     val so2: Float,
 
-    @SerializedName("pm25")
+    @SerializedName("pm2_5")
     val pm25: Float,
 
     @SerializedName("pm10")

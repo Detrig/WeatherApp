@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import github.detrig.weatherapp.R
-import github.detrig.weatherapp.weather.presentation.models.AirQualityUi
+import github.detrig.weatherapp.weather.presentation.models.AirQualityUiModel
 import github.detrig.weatherapp.weather.presentation.models.ParameterUi
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 
@@ -31,7 +31,7 @@ fun PreviewWeatherNoInternetScreenUi() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewWeatherScreenUi() {
-    val airQualityMock = AirQualityUi(
+    val airQualityMock = AirQualityUiModel(
         title = R.string.harmful_for_sensitive_people,   // пример строки
         subtitle = "Людям с астмой лучше сократитsь время на улице",
         color = Color(0xFFFF9800), // оранжевый — Unhealthy for Sensitive Groups
@@ -82,9 +82,9 @@ fun PreviewWeatherScreenUi() {
     val weatherMock = WeatherInCityUi(
         cityName = "Moscow City",
         temperature = "33°",
-        feelTemperature = "Ощущается как 31°",
+        feelTemperature = "31°",
         wind = "5.5 м/с",
-        uv = "UV 4 (умеренный)",
+        uv = "4",
         condition = "sunny",
         airQuality = airQualityMock
     )
