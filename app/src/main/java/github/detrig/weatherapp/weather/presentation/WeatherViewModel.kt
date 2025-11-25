@@ -12,13 +12,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val weatherUiMapper: WeatherResult.Mapper<WeatherScreenUi>,
+    private val weatherUiMapper: WeatherResult.Mapper<WeatherScreenUiState>,
     private val repository: WeatherRepository,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
 
-    val state: StateFlow<WeatherScreenUi> =
+    val state: StateFlow<WeatherScreenUiState> =
         savedStateHandle.getStateFlow(KEY, weatherUiMapper.mapEmpty())
 
     init {

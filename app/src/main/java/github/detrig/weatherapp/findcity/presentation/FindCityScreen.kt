@@ -1,7 +1,6 @@
 package github.detrig.weatherapp.findcity.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import github.detrig.weatherapp.R
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import java.io.Serializable
 
 @Composable
@@ -50,7 +49,7 @@ fun FindCityScreen(
                 input.value = text
             }
         },
-        foundCityUi = foundCityUi.value,
+        foundCityScreenUiState = foundCityUi.value,
         onFoundCityClick = { foundCity: FoundCity ->
             viewModel.saveChosenCity(foundCity = foundCity)
             navigateToWeatherScreen.invoke()
@@ -66,7 +65,7 @@ fun FindCityScreen(
 fun FindCityScreenUi(
     input: String,
     onInputChange: (String) -> Unit,
-    foundCityUi: FoundCityUi,
+    foundCityScreenUiState: FoundCityScreenUiState,
     onFoundCityClick: (FoundCity) -> Unit,
     onRetryClick: () -> Unit,
     onGetLocationClick: () -> Unit = {}
@@ -82,7 +81,7 @@ fun FindCityScreenUi(
             value = input,
             onValueChange = onInputChange,
         )
-        foundCityUi.Show(onFoundCityClick, onRetryClick)
+        foundCityScreenUiState.Show(onFoundCityClick, onRetryClick)
         Button(
             onClick = onGetLocationClick, modifier = Modifier
                 .padding(8.dp)
@@ -94,19 +93,19 @@ fun FindCityScreenUi(
 }
 
 
-interface FoundCityUi : Serializable {
+interface FoundCityScreenUiState : Serializable {
 
     @Composable
     fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit)
 
-    data object Empty : FoundCityUi {
+    data object Empty : FoundCityScreenUiState {
         private fun readResolve(): Any = Empty
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit) = Unit
     }
 
-    data class Base(private val foundCityList: List<FoundCity>) : FoundCityUi {
+    data class Base(private val foundCityList: List<FoundCity>) : FoundCityScreenUiState {
 
         @Composable
         override fun Show(onFoundCityClick: (FoundCity) -> Unit, onRetryClick: () -> Unit) {
@@ -120,7 +119,7 @@ interface FoundCityUi : Serializable {
         }
     }
 
-    data object Loading : FoundCityUi {
+    data object Loading : FoundCityScreenUiState {
         private fun readResolve(): Any = Loading
 
         @Composable
@@ -133,7 +132,7 @@ interface FoundCityUi : Serializable {
 
     }
 
-    data object GenericError : FoundCityUi {
+    data object GenericError : FoundCityScreenUiState {
         private fun readResolve(): Any = GenericError
 
         @Composable
@@ -168,7 +167,7 @@ interface FoundCityUi : Serializable {
         }
     }
 
-    data object NoConnectionError : FoundCityUi {
+    data object NoConnectionError : FoundCityScreenUiState {
         private fun readResolve(): Any = NoConnectionError
 
         @Composable
@@ -239,7 +238,7 @@ fun PreviewEmptyFindCityScreenUi() {
     FindCityScreenUi(
         input = "",
         onInputChange = {},
-        foundCityUi = FoundCityUi.Empty,
+        foundCityScreenUiState = FoundCityScreenUiState.Empty,
         onFoundCityClick = {},
         onRetryClick = {}) {
 
@@ -252,7 +251,7 @@ fun PreviewNoInternetConnectionFindCityScreenUi() {
     FindCityScreenUi(
         input = "mos",
         onInputChange = {},
-        foundCityUi = FoundCityUi.NoConnectionError,
+        foundCityScreenUiState = FoundCityScreenUiState.NoConnectionError,
         onFoundCityClick = {},
         onRetryClick = {}) {
     }
@@ -263,7 +262,7 @@ fun PreviewNoInternetConnectionFindCityScreenUi() {
 @Composable
 fun PreviewNotEmptyFindCityScreenUi() {
     FindCityScreenUi(
-        input = "Mosc", onInputChange = {}, foundCityUi = FoundCityUi.Base(
+        input = "Mosc", onInputChange = {}, foundCityScreenUiState = FoundCityScreenUiState.Base(
             foundCityList = listOf(
                 FoundCity(
                     name = "Moscow",

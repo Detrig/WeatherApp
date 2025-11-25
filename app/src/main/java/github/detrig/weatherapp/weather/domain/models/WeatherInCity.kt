@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.weather.domain
+package github.detrig.weatherapp.weather.domain.models
 
 import java.io.Serializable
 
@@ -8,5 +8,6 @@ data class WeatherInCity(
     val feelTemperature: Float,
     val windSpeed: Float,
     val uv: Float,
-    val condition: String
+    val condition: String,
+    val airQuality: AirQuality
 ) : Serializable

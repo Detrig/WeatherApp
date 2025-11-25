@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.findcity.domain
+package github.detrig.weatherapp.core
 
 sealed class DomainException : Exception()
 

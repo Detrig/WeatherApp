@@ -4,11 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.FoundCity
-import github.detrig.weatherapp.findcity.domain.NoInternetException
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
+import github.detrig.weatherapp.core.NoInternetException
 import github.detrig.weatherapp.findcity.presentation.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
-import github.detrig.weatherapp.findcity.presentation.FoundCityUi
+import github.detrig.weatherapp.findcity.presentation.FoundCityScreenUiState
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ class FindCityViewModelTest {
     private lateinit var repository: FakeFindCityRepository
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var runAsync: FakeRunAsync
-    private lateinit var findCityMapper: FindCityResult.Mapper<FoundCityUi>
+    private lateinit var findCityMapper: FindCityResult.Mapper<FoundCityScreenUiState>
     private lateinit var viewModel: FindCityViewModel
 
     @Before
@@ -40,28 +40,28 @@ class FindCityViewModelTest {
 
     @Test
     fun errorThenFindCityThenSaveIt() {
-        val state: StateFlow<FoundCityUi> = viewModel.state
-        var actual: FoundCityUi = state.value
-        assertEquals(FoundCityUi.Empty, actual)
+        val state: StateFlow<FoundCityScreenUiState> = viewModel.state
+        var actual: FoundCityScreenUiState = state.value
+        assertEquals(FoundCityScreenUiState.Empty, actual)
 
         viewModel.findCity("")
-        assertEquals(FoundCityUi.Empty, state.value)
+        assertEquals(FoundCityScreenUiState.Empty, state.value)
 
         viewModel.findCity("FUCK")
         assertEquals(
-            FoundCityUi.Loading,
+            FoundCityScreenUiState.Loading,
             state.value
         ) //Сначала Empty тк результат приходит асинхронно
         runAsync.returnResult()
-        assertEquals(FoundCityUi.NoConnectionError, state.value)
+        assertEquals(FoundCityScreenUiState.NoConnectionError, state.value)
 
         viewModel.findCity("FUCK")
-        assertEquals(FoundCityUi.Loading, state.value)
+        assertEquals(FoundCityScreenUiState.Loading, state.value)
         runAsync.returnResult()
-        assertEquals(FoundCityUi.Empty, state.value)
+        assertEquals(FoundCityScreenUiState.Empty, state.value)
 
         viewModel.findCity(cityName = "Mos")
-        assertEquals(FoundCityUi.Loading, state.value)
+        assertEquals(FoundCityScreenUiState.Loading, state.value)
 
         runAsync.returnResult()
         val foundCityList = listOf(
@@ -73,7 +73,7 @@ class FindCityViewModelTest {
             ), FoundCity(name = "Moscow", latitude = 55.75f, country = "USA", longitude = 37.61f)
         )
         assertEquals(
-            FoundCityUi.Base(foundCityList), state.value
+            FoundCityScreenUiState.Base(foundCityList), state.value
         )
 
         viewModel.saveChosenCity(foundCityList.first())

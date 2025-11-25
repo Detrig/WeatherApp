@@ -1,28 +1,28 @@
 package github.detrig.weatherapp.findcity.presentation
 
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import javax.inject.Inject
 
-class FindCityUiMapper @Inject constructor() : FindCityResult.Mapper<FoundCityUi> {
+class FindCityUiMapper @Inject constructor() : FindCityResult.Mapper<FoundCityScreenUiState> {
 
-    override fun mapFoundCity(foundCity: List<FoundCity>): FoundCityUi {
-        return FoundCityUi.Base(foundCity)
+    override fun mapFoundCity(foundCity: List<FoundCity>): FoundCityScreenUiState {
+        return FoundCityScreenUiState.Base(foundCity)
     }
 
-    override fun mapEmpty(): FoundCityUi {
-        return FoundCityUi.Empty
+    override fun mapEmpty(): FoundCityScreenUiState {
+        return FoundCityScreenUiState.Empty
     }
 
-    override fun mapLoading(): FoundCityUi {
-        return FoundCityUi.Loading
+    override fun mapLoading(): FoundCityScreenUiState {
+        return FoundCityScreenUiState.Loading
     }
 
-    override fun mapNoInternetError(): FoundCityUi {
-        return FoundCityUi.NoConnectionError
+    override fun mapNoInternetError(): FoundCityScreenUiState {
+        return FoundCityScreenUiState.NoConnectionError
     }
 
-    override fun mapGenericError(): FoundCityUi {
-        return FoundCityUi.GenericError
+    override fun mapGenericError(): FoundCityScreenUiState {
+        return FoundCityScreenUiState.GenericError
     }
 }

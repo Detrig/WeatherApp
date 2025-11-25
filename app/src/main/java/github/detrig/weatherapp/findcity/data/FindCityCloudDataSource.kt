@@ -1,7 +1,8 @@
 package github.detrig.weatherapp.findcity.data
 
-import github.detrig.weatherapp.findcity.domain.GenericDomainException
-import github.detrig.weatherapp.findcity.domain.NoInternetException
+import github.detrig.weatherapp.findcity.data.models.FoundCityCloud
+import github.detrig.weatherapp.core.GenericDomainException
+import github.detrig.weatherapp.core.NoInternetException
 import java.io.IOException
 import javax.inject.Inject
 
