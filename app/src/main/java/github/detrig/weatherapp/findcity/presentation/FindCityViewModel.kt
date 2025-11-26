@@ -8,19 +8,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class FindCityViewModel @Inject constructor(
-    private val mapper: FindCityResult.Mapper<FoundCityUi>,
+    private val mapper: FindCityResult.Mapper<FoundCityScreenUiState>,
     private val repository: FindCityRepository,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
 
-    val state: StateFlow<FoundCityUi> =
+    val state: StateFlow<FoundCityScreenUiState> =
         savedStateHandle.getStateFlow(KEY, mapper.mapEmpty())
 
     fun findCity(cityName: String) {

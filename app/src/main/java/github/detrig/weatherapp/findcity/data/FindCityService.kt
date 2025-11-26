@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.findcity.data
 
+import github.detrig.weatherapp.findcity.data.models.FoundCityCloud
 import retrofit2.http.GET
 import retrofit2.http.Query
 

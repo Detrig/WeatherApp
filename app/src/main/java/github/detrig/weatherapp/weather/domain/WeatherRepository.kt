@@ -1,11 +1,11 @@
 package github.detrig.weatherapp.weather.domain
 
 import android.util.Log
-import github.detrig.weatherapp.findcity.domain.DomainException
-import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.core.DomainException
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.weather.data.WeatherCachedDataSource
 import github.detrig.weatherapp.weather.data.WeatherCloudDataSource
+import github.detrig.weatherapp.weather.data.mappers.toDomain
 import javax.inject.Inject
 
 interface WeatherRepository {
@@ -25,14 +25,7 @@ interface WeatherRepository {
                     weatherCloudDataSource.getWeather(foundCity.latitude, foundCity.longitude)
                 Log.d("alz-04", "result: $result")
                 return WeatherResult.Base(
-                    WeatherInCity(
-                        cityName = foundCity.name,
-                        temperature = result.currentWeather.temp,
-                        feelTemperature = result.currentWeather.feelTemp,
-                        windSpeed = result.currentWeather.windSpeed,
-                        uv = result.currentWeather.uv,
-                        condition = result.currentWeather.condition.text
-                    )
+                    result.toDomain(foundCity.name)
                 )
             } catch (e: DomainException) {
                 return WeatherResult.Failed(e)

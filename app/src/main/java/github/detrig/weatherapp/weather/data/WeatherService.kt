@@ -1,6 +1,6 @@
 package github.detrig.weatherapp.weather.data
 
-import github.detrig.weatherapp.weather.domain.WeatherInCity
+import github.detrig.weatherapp.weather.data.models.WeatherCloud
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,6 +16,6 @@ interface WeatherService {
     suspend fun getWeather(
         @Query("key") apiKey: String,
         @Query("q") query: String, //"${lat},${lon}"
-        @Query("aqi") airQualityFlag: Boolean = true
+        @Query("aqi") airQualityFlag: String = "yes"
     ): WeatherCloud
 }

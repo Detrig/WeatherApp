@@ -3,7 +3,7 @@ package github.detrig.weatherapp.weather.data
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import github.detrig.weatherapp.core.AbstractCachedDataSource
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import javax.inject.Inject
 
 interface WeatherCachedDataSource {
