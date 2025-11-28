@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import github.detrig.weatherapp.R
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 import github.detrig.weatherapp.weather.presentation.ui.AirQualityUi
+import github.detrig.weatherapp.weather.presentation.ui.ForecastUi
 import github.detrig.weatherapp.weather.presentation.ui.LoadingUi
 import github.detrig.weatherapp.weather.presentation.ui.WeatherUi
 import java.io.Serializable
@@ -55,6 +56,8 @@ interface WeatherScreenUiState : Serializable {
                 WeatherUi(weatherUi)
                 Spacer(modifier = Modifier.height(16.dp))
                 AirQualityUi(weatherUi.airQuality)
+                Spacer(modifier = Modifier.height(16.dp))
+                ForecastUi(weatherUi.forecast, modifier = Modifier)
             }
         }
     }

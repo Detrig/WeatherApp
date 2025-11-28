@@ -1,7 +1,9 @@
 package github.detrig.weatherapp.findcity.presentation
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +19,12 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import github.detrig.weatherapp.R
+
+fun isLocationEnabled(context: Context): Boolean {
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+}
 
 //@RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
 @Composable
@@ -65,6 +73,11 @@ fun GetUserLocationScreenWrapper(
 
         if (!fineGranted && !coarseGranted) {
             onFailed(permissionError)
+            return
+        }
+
+        if (!isLocationEnabled(context)) {
+            onFailed(geoError) // например: "Геолокация отключена в настройках устройства"
             return
         }
 
