@@ -6,6 +6,7 @@ import github.detrig.weatherapp.weather.domain.models.Weather
 
 fun WeatherCloud.toDomain(foundCityName: String): Weather {
     return Weather(
+        localTime = this.location.localTime.toLocalTime(),
         cityName = foundCityName,
         temperature = this.currentWeatherCloud.temp,
         feelTemperature = this.currentWeatherCloud.feelTemp,

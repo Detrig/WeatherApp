@@ -1,8 +1,10 @@
 package github.detrig.weatherapp.weather.domain.models
 
 import java.io.Serializable
+import java.time.LocalTime
 
 data class Weather(
+    val localTime: LocalTime,
     val cityName: String,
     val temperature: Float,
     val feelTemperature: Float,

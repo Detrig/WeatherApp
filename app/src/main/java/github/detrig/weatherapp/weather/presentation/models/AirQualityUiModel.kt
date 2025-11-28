@@ -3,6 +3,7 @@ package github.detrig.weatherapp.weather.presentation.models
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import java.io.Serializable
 
 data class AirQualityUiModel(
     @StringRes val title: Int,
@@ -14,7 +15,7 @@ data class AirQualityUiModel(
     val o3: ParameterUi,
     val so2: ParameterUi,
     val co: ParameterUi
-)
+) : Serializable
 
 data class ParameterUi(
     val name: String,
@@ -22,4 +23,4 @@ data class ParameterUi(
     @StringRes val dangerLevel: Int,
     @DrawableRes val icon: Int,
     val color: Color
-)
+) : Serializable

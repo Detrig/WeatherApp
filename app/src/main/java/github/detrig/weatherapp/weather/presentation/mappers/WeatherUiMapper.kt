@@ -4,6 +4,7 @@ import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.models.Weather
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class WeatherUiMapper @Inject constructor(
@@ -12,7 +13,9 @@ class WeatherUiMapper @Inject constructor(
 ) : WeatherResult.Mapper<WeatherScreenUiState> {
 
     override fun mapWeatherInCity(weather: Weather): WeatherScreenUiState {
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
         val uiModel = WeatherInCityUi(
+            localTime = weather.localTime.format(formatter),
             cityName = weather.cityName,
             temperature = "${weather.temperature}°",
             feelTemperature = "${weather.feelTemperature}°",

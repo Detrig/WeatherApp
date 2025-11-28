@@ -80,6 +80,7 @@ fun PreviewWeatherScreenUi() {
     )
 
     val weatherMock = WeatherInCityUi(
+        localTime = "22:00",
         cityName = "Moscow City",
         temperature = "33°",
         feelTemperature = "31°",

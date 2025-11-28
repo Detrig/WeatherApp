@@ -1,6 +1,9 @@
 package github.detrig.weatherapp.weather.presentation.models
 
+import java.io.Serializable
+
 data class WeatherInCityUi(
+    val localTime: String,
     val cityName: String,
     val temperature: String,
     val feelTemperature: String,
@@ -9,4 +12,4 @@ data class WeatherInCityUi(
     val condition: String,
     val airQuality: AirQualityUiModel,
     val forecast: List<ForecastDayUiModel>
-)
+) : Serializable
