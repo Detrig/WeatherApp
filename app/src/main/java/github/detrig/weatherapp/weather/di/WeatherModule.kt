@@ -13,6 +13,7 @@ import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
 import github.detrig.weatherapp.weather.presentation.mappers.WeatherUiMapper
 import github.detrig.weatherapp.weather.presentation.mappers.AirQualityUiMapper
+import github.detrig.weatherapp.weather.presentation.mappers.ForecastDayUiMapper
 import retrofit2.Retrofit
 import javax.inject.Named
 
@@ -43,4 +44,7 @@ abstract class WeatherBindsModule {
 
     @Binds
     abstract fun bindAirQualityUiMapper(mapper: AirQualityUiMapper.Base): AirQualityUiMapper
+
+    @Binds
+    abstract fun bindForecastDayUiMapper(mapper: ForecastDayUiMapper.Base): ForecastDayUiMapper
 }

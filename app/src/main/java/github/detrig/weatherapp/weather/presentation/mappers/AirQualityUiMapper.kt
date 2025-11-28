@@ -70,7 +70,7 @@ enum class DangerLevel {
     GOOD, MODERATE, UNHEALTHY_SENSITIVE, UNHEALTHY, VERY_UNHEALTHY, HAZARDOUS
 }
 
-object MapAirParams {
+private object MapAirParams {
 
     fun mapPm25(value: Float): ParameterUi {
         val level = dangerLevelForPm25(value)
