@@ -86,7 +86,8 @@ fun PreviewWeatherScreenUi() {
         wind = "5.5 м/с",
         uv = "4",
         condition = "sunny",
-        airQuality = airQualityMock
+        airQuality = airQualityMock,
+        forecast = listOf()
     )
 
     WeatherScreenUiState.Base(weatherMock).Show(onRetryClick = {})

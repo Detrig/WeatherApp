@@ -2,7 +2,7 @@ package github.detrig.weatherapp.weather.domain
 
 import github.detrig.weatherapp.core.DomainException
 import github.detrig.weatherapp.core.NoInternetException
-import github.detrig.weatherapp.weather.domain.models.WeatherInCity
+import github.detrig.weatherapp.weather.domain.models.Weather
 import java.io.Serializable
 
 interface WeatherResult {
@@ -11,7 +11,7 @@ interface WeatherResult {
 
     interface Mapper<T : Serializable> {
 
-        fun mapWeatherInCity(weatherInCity: WeatherInCity): T
+        fun mapWeatherInCity(weather: Weather): T
 
         fun mapEmpty(): T
 
@@ -23,10 +23,10 @@ interface WeatherResult {
     }
 
     data class Base(
-        private val weatherInCity: WeatherInCity
+        private val weather: Weather
     ) : WeatherResult {
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
-            return mapper.mapWeatherInCity(weatherInCity)
+            return mapper.mapWeatherInCity(weather)
         }
     }
 

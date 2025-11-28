@@ -3,41 +3,29 @@ package github.detrig.weatherapp.weather.data.models
 import com.google.gson.annotations.SerializedName
 
 data class WeatherCloud(
+    @SerializedName("location")
+    val location: LocationCloud,
+
     @SerializedName("current")
-    val currentWeather: CurrentWeather
+    val currentWeatherCloud: CurrentWeatherCloud,
+
+    @SerializedName("forecast")
+    val forecast: Forecast
 )
 
-data class CurrentWeather(
-    @SerializedName("temp_c")
-    val temp: Float,
+data class LocationCloud(
+    @SerializedName("name")
+    val cityName: String,
 
-    @SerializedName("is_day")
-    val isDay: Int,
+    @SerializedName("region")
+    val region: String,
 
-    @SerializedName("condition")
-    val condition: Condition,
+    @SerializedName("country")
+    val county: String,
 
-    @SerializedName("wind_kph")
-    val windSpeed: Float,
-
-    @SerializedName("uv")
-    val uv: Float,
-
-    @SerializedName("feelslike_c")
-    val feelTemp: Float,
-
-    @SerializedName("air_quality")
-    val airQuality: AirQualityCloud
+    @SerializedName("localtime")
+    val localTime: String
 )
 
-data class Condition(
-    @SerializedName("text")
-    val text: String,
 
-    @SerializedName("icon")
-    val iconUrl: String,
-
-    @SerializedName("code")
-    val code: Int
-)
 

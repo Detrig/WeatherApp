@@ -7,5 +7,6 @@ data class WeatherInCityUi(
     val wind: String,
     val uv: String,
     val condition: String,
-    val airQuality: AirQualityUiModel
+    val airQuality: AirQualityUiModel,
+    val forecast: List<ForecastDayUiModel>
 )
