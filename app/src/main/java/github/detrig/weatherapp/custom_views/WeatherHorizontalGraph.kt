@@ -31,7 +31,6 @@ center: Offset — центр области (Offset(size.width/2, size.height/2
 
 density: Float и fontScale: Float — для пересчёта dp/sp.
 
-
  */
 
 data class ChartConfig(

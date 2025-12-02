@@ -1,6 +1,7 @@
 package github.detrig.weatherapp.weather.presentation.models
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.painter.Painter
 import java.io.Serializable
 
 data class ForecastDayUiModel(

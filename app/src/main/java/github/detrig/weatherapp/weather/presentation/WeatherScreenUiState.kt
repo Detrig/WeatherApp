@@ -99,7 +99,6 @@ interface WeatherScreenUiState : Serializable {
                 }
             }
         }
-
     }
 
     data object Loading : WeatherScreenUiState {
