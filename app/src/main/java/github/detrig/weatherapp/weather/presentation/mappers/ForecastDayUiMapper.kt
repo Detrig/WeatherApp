@@ -28,11 +28,12 @@ interface ForecastDayUiMapper {
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             return WeatherForHourUi(
                 time = this.time.format(formatter),
-                temp = "${this.temp}°",
+                tempValue = this.temp,
+                tempText = "${this.temp}°",
                 windSpeed = "${this.windSpeed} km/h",
-                chanceOfRain = "${this.chanceOfRain}%",
-                chanceOfSnow = "${this.chanceOfSnow}%",
-                cloud = this.cloud,
+                chanceOfRain = "${this.chanceOfRain * 100}%",
+                chanceOfSnow = "${this.chanceOfSnow * 100}%",
+                cloud = this.cloud * 100,
                 iconForWeather = mapHourlyWeatherIcon(
                     this.time,
                     this.chanceOfSnow,

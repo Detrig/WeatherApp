@@ -10,10 +10,11 @@ data class ForecastDayUiModel(
 
 data class WeatherForHourUi(
     val time: String,
-    val temp: String,
+    val tempValue: Float,
+    val tempText: String,
     val windSpeed: String,
     val chanceOfRain: String,
     val chanceOfSnow: String,
     val cloud: Float,
-    @DrawableRes val iconForWeather: Int
+    @DrawableRes val iconForWeather: Int = 0
 ) : Serializable

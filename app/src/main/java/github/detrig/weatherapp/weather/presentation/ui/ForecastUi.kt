@@ -78,7 +78,7 @@ private fun HourWeatherItem(hour: WeatherForHourUi) {
 
         Spacer(Modifier.height(4.dp))
 
-        Text(text = hour.temp, style = MaterialTheme.typography.bodySmall)
+        Text(text = hour.tempText, style = MaterialTheme.typography.bodySmall)
 
         Spacer(Modifier.height(2.dp))
         Text(text = "Ветер: ${hour.windSpeed}", style = MaterialTheme.typography.labelSmall)
