@@ -128,13 +128,13 @@ fun WeatherHorizontalGraph(
 
                 // 2) считаем позицию текста: по X центрируем над кружком,
                 // по Y — над кружком с небольшим отступом
-                val textTempX = it.key.x - textTempLayoutResult.size.width / 2f
+                val textX = it.key.x - textTempLayoutResult.size.width / 2f
                 val textTempY =
                     it.key.y - outerRadius - labelPadding - textTempLayoutResult.size.height
 
                 drawText(
                     textLayoutResult = textTempLayoutResult,
-                    topLeft = Offset(textTempX, textTempY)
+                    topLeft = Offset(textX, textTempY)
                 )
                 drawCircle(
                     color = config.pointColor,
@@ -143,6 +143,11 @@ fun WeatherHorizontalGraph(
                 )
 
 
+//                drawImage(
+//                    image = ImageBitmap.imageResource(it.value.iconForWeather),
+//                    topLeft = Offset(textX, 0f)
+//                )
+
                 val textTimeLayoutResult = textMeasurer.measure(
                     text = AnnotatedString(it.value.time),
                     style = TextStyle(
@@ -150,11 +155,11 @@ fun WeatherHorizontalGraph(
                         color = Color.Gray
                     )
                 )
-                val textTimeX = it.key.x - textTimeLayoutResult.size.width / 2f
+
                 val textTimeY = size.minDimension - 32f
                 drawText(
                     textLayoutResult = textTimeLayoutResult,
-                    topLeft = Offset(textTimeX, textTimeY)
+                    topLeft = Offset(textX, textTimeY)
                 )
             }
         }

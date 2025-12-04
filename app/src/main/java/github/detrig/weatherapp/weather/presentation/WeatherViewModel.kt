@@ -7,7 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +22,13 @@ class WeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<WeatherScreenUiState> =
-        savedStateHandle.getStateFlow(KEY, weatherUiMapper.mapEmpty())
+        repository.observeWeather()
+            .map { it.map(weatherUiMapper) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = weatherUiMapper.mapLoading()
+            )
 
     init {
         loadWeather()

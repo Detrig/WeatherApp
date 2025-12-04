@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.weather.data
+package github.detrig.weatherapp.weather.data.api
 
 import github.detrig.weatherapp.weather.data.models.WeatherCloud
 import retrofit2.http.GET

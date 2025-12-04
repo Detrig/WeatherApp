@@ -3,6 +3,9 @@ package github.detrig.weatherapp.weather.data.models
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherCloud(
+    @SerializedName("last_updated_epoch")
+    val lastUpdatedTime: Long,
+
     @SerializedName("temp_c")
     val temp: Float,
 
