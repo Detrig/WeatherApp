@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.weather.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,9 +8,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
+import github.detrig.weatherapp.weather.domain.WeatherUpdateScheduler
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -17,12 +20,16 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     private val weatherUiMapper: WeatherResult.Mapper<WeatherScreenUiState>,
     private val repository: WeatherRepository,
+    private val weatherUpdateScheduler: WeatherUpdateScheduler,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
 
     val state: StateFlow<WeatherScreenUiState> =
         repository.observeWeather()
+            .onEach { result ->
+                Log.d("alz-04", "DB emission: $result")
+            }
             .map { it.map(weatherUiMapper) }
             .stateIn(
                 viewModelScope,
@@ -32,6 +39,8 @@ class WeatherViewModel @Inject constructor(
 
     init {
         loadWeather()
+        weatherUpdateScheduler.schedulePeriodicUpdate()
+        onDebugClickRunWorkerOnce()
     }
 
     fun loadWeather() {
@@ -39,8 +48,12 @@ class WeatherViewModel @Inject constructor(
             val weatherResult = repository.weather()
             weatherResult.map(weatherUiMapper)
         }) {
-            savedStateHandle[KEY] = it
+//            savedStateHandle[KEY] = it
         }
+    }
+
+    fun onDebugClickRunWorkerOnce() {
+        weatherUpdateScheduler.scheduleOneTimeDebugUpdate()
     }
 
     companion object {

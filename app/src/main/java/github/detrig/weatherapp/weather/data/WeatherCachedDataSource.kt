@@ -1,6 +1,7 @@
 package github.detrig.weatherapp.weather.data
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import github.detrig.weatherapp.core.AbstractCachedDataSource
@@ -41,6 +42,7 @@ interface WeatherCachedDataSource {
 
         override suspend fun saveWeather(weatherCloud: WeatherCloud, updatedAt: Long) {
             val json = gson.toJson(weatherCloud)
+            Log.d("alz-04", "saveWeather: ${weatherCloud.location.localTime}")
             weatherDao.insertWeather(
                 WeatherCacheEntity(
                     json = json,

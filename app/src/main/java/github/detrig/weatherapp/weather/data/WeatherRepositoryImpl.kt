@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.weather.data
 
+import android.util.Log
 import com.google.gson.Gson
 import github.detrig.weatherapp.core.DomainException
 import github.detrig.weatherapp.core.GenericDomainException
@@ -27,11 +28,12 @@ class WeatherRepositoryImpl @Inject constructor(
                 weatherCloudDataSource.getWeather(foundCity.latitude, foundCity.longitude)
 
             cachedDataSource.saveWeather(result, result.currentWeatherCloud.lastUpdatedTime)
-
+            Log.d("alz-04", "weather result success: ${result.location.localTime}")
             return WeatherResult.Base(
                 result.toDomain(foundCity.name)
             )
         } catch (e: DomainException) {
+            Log.d("alz-04", "weather error: ${e}")
             val cachedWeather = cachedDataSource.getCachedWeather()
             return if (cachedWeather != null) {
                 val cloud = gson.fromJson(cachedWeather.json, WeatherCloud::class.java)

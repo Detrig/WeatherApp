@@ -12,8 +12,10 @@ import github.detrig.weatherapp.weather.data.WeatherRepositoryImpl
 import github.detrig.weatherapp.weather.data.api.WeatherService
 import github.detrig.weatherapp.weather.data.db.CacheModule
 import github.detrig.weatherapp.weather.data.db.WeatherDao
+import github.detrig.weatherapp.weather.data.shedule.WeatherUpdateSchedulerImpl
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
+import github.detrig.weatherapp.weather.domain.WeatherUpdateScheduler
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
 import github.detrig.weatherapp.weather.presentation.mappers.WeatherUiMapper
 import github.detrig.weatherapp.weather.presentation.mappers.AirQualityUiMapper
@@ -41,15 +43,6 @@ class WeatherModule {
 abstract class WeatherBindsModule {
 
     @Binds
-    abstract fun bindWeatherCachedDataSource(weatherCachedDataSource: WeatherCachedDataSource.Base): WeatherCachedDataSource
-
-    @Binds
-    abstract fun bindWeatherCloudDataSource(weatherCloudDataSource: WeatherCloudDataSource.Base): WeatherCloudDataSource
-
-    @Binds
-    abstract fun bindWeatherRepository(repository: WeatherRepositoryImpl): WeatherRepository
-
-    @Binds
     abstract fun bindWeatherUiMapper(mapper: WeatherUiMapper): WeatherResult.Mapper<WeatherScreenUiState>
 
     @Binds
@@ -65,4 +58,22 @@ abstract class WeatherSingletonBindsModule {
     @Singleton
     @Binds
     abstract fun bindCacheModule(cacheModule: CacheModule.Base): CacheModule
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherSyncScheduler(
+        impl: WeatherUpdateSchedulerImpl
+    ): WeatherUpdateScheduler
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherCachedDataSource(weatherCachedDataSource: WeatherCachedDataSource.Base): WeatherCachedDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherCloudDataSource(weatherCloudDataSource: WeatherCloudDataSource.Base): WeatherCloudDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherRepository(repository: WeatherRepositoryImpl): WeatherRepository
 }

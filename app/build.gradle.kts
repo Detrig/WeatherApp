@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
 }
 
@@ -75,6 +76,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     //kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation("androidx.hilt:hilt-work:1.3.0")
+    //kapt("androidx.hilt:hilt-compiler:1.3.0")
 
     implementation(libs.retrofit)
     implementation(libs.okhttp)
