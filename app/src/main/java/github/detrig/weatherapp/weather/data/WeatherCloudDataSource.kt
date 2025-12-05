@@ -1,6 +1,9 @@
 package github.detrig.weatherapp.weather.data
 
-import github.detrig.weatherapp.findcity.domain.NoInternetException
+import github.detrig.weatherapp.core.GenericDomainException
+import github.detrig.weatherapp.core.NoInternetException
+import github.detrig.weatherapp.weather.data.api.WeatherService
+import github.detrig.weatherapp.weather.data.models.WeatherCloud
 import java.io.IOException
 import javax.inject.Inject
 
@@ -18,11 +21,10 @@ interface WeatherCloudDataSource {
         ): WeatherCloud {
             try {
                 return service.getWeather(API_KEY, "$latitude,$longitude")
+            } catch (e: IOException) {
+                throw NoInternetException
             } catch (e: Exception) {
-                if (e is IOException)
-                    throw NoInternetException
-                //todo else throw generic error
-                throw e
+                throw GenericDomainException(e)
             }
         }
     }

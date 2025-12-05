@@ -1,6 +1,7 @@
 package github.detrig.weatherapp.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,15 +26,17 @@ import github.detrig.weatherapp.weather.presentation.WeatherScreen
 import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import github.detrig.weatherapp.findcity.presentation.FindCityOrGetLocationScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "onCreate, savedInstanceState = $savedInstanceState")
         enableEdgeToEdge()
         setContent {
             WeatherAppTheme {
-                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainContent(innerPadding)
                 }
             }
@@ -64,7 +67,7 @@ private fun MainContent(innerPadding: PaddingValues, viewModel: MainViewModel = 
                 .fillMaxSize()
         ) {
             composable("findCityScreen") {
-                FindCityScreen(
+                FindCityOrGetLocationScreen(
                     viewModel = hiltViewModel<FindCityViewModel>(),
                     navigateToWeatherScreen = {
                         navController.navigate("weatherScreen")

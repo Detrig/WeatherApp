@@ -3,4 +3,25 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="retry">Retry</string>
     <string name="loading">Wait for a second</string>
+    <string name="temp">Temp</string>
+    <string name="feelTemp">Feel temp</string>
+    <string name="windSpeed">Wind speed</string>
+    <string name="uv">Uv</string>
+    <string name="get_location">Use current location</string>
+    <string name="geo_error">Error while getting geo</string>
+    <string name="error_granted_permission">Geo permission not granted</string>
+    <string name="unexpected_error">An unexpected error has occurred</string>
+    <string name="low_level">Low level</string>
+    <string name="moderate_level">Умеренный уровень</string>
+    <string name="increases_level">Повышенный уровень</string>
+    <string name="high_level">Высокий уровень</string>
+    <string name="very_high_level">Очень высокий уровень</string>
+    <string name="dangerous_level">Опасный уровень</string>
+    <string name="within_normal_street_values">В пределах обычных уличных значений</string>
+    <string name="good_air">Воздух хороший</string>
+    <string name="moderate_air">Воздух умеренный</string>
+    <string name="harmful_for_sensitive_people">Вреден для чувствительных групп</string>
+    <string name="harmful_for_everyone">Вреден для всех</string>
+    <string name="very_harmful">Очень вредный</string>
+    <string name="dangerous">Опасный</string>
 </resources>

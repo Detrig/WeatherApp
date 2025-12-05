@@ -1,5 +1,8 @@
 package github.detrig.weatherapp.findcity.domain
 
+import github.detrig.weatherapp.core.DomainException
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
+import github.detrig.weatherapp.core.NoInternetException
 import java.io.Serializable
 
 interface FindCityResult {
@@ -15,10 +18,12 @@ interface FindCityResult {
         fun mapLoading(): T
 
         fun mapNoInternetError(): T
+
+        fun mapGenericError(): T
     }
 
     data class Base(
-        private val foundCity: List<FoundCity>
+        val foundCity: List<FoundCity>
     ) : FindCityResult {
 
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
@@ -27,14 +32,11 @@ interface FindCityResult {
     }
 
     data class Failed(private val error: DomainException) : FindCityResult {
-        override fun <T : Serializable> map(mapper: Mapper<T>): T {
-            if (error is NoInternetException)
-                return mapper.mapNoInternetError()
-            else
-                TODO()
-            //return mapper.mapGenericError()
-        }
-
+        override fun <T : Serializable> map(mapper: Mapper<T>): T =
+            when (error) {
+                is NoInternetException -> mapper.mapNoInternetError()
+                else -> mapper.mapGenericError()
+            }
     }
 
     data object Empty : FindCityResult {
@@ -43,7 +45,7 @@ interface FindCityResult {
         }
     }
 
-    data object Loading: FindCityResult {
+    data object Loading : FindCityResult {
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
             return mapper.mapLoading()
         }

@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.findcity.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,19 +8,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import github.detrig.weatherapp.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.FoundCity
+import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class FindCityViewModel @Inject constructor(
-    private val mapper: FindCityResult.Mapper<FoundCityUi>,
+    private val mapper: FindCityResult.Mapper<FoundCityScreenUiState>,
     private val repository: FindCityRepository,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
 
-    val state: StateFlow<FoundCityUi> =
+    val state: StateFlow<FoundCityScreenUiState> =
         savedStateHandle.getStateFlow(KEY, mapper.mapEmpty())
 
     fun findCity(cityName: String) {
@@ -40,6 +41,24 @@ class FindCityViewModel @Inject constructor(
             repository.saveCity(foundCity)
         }) {
 
+        }
+    }
+
+    fun findCityByLocation(lat: Double, lon: Double, onComplete: () -> Unit) {
+        Log.d("alz-04", "lat: $lat, lon: $lon")
+        runAsync.runAsync(viewModelScope, background = {
+            savedStateHandle[KEY] = mapper.mapLoading()
+
+            val foundCityResult = repository.findCity("$lat,$lon")
+
+            if (foundCityResult is FindCityResult.Base && foundCityResult.foundCity.isNotEmpty()) {
+                val foundCityByGeo = foundCityResult.foundCity.first()
+                repository.saveCity(foundCityByGeo)
+            }
+            foundCityResult.map(mapper)
+        }) {
+            savedStateHandle[KEY] = it
+            onComplete.invoke()
         }
     }
 

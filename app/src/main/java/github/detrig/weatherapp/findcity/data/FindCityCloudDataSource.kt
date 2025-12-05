@@ -1,6 +1,8 @@
 package github.detrig.weatherapp.findcity.data
 
-import github.detrig.weatherapp.findcity.domain.NoInternetException
+import github.detrig.weatherapp.findcity.data.models.FoundCityCloud
+import github.detrig.weatherapp.core.GenericDomainException
+import github.detrig.weatherapp.core.NoInternetException
 import java.io.IOException
 import javax.inject.Inject
 
@@ -17,11 +19,10 @@ interface FindCityCloudDataSource {
         override suspend fun findCity(query: String): List<FoundCityCloud> {
             try {
                 return service.findCity(API_KEY, query)
+            } catch (e: IOException) {
+                throw NoInternetException
             } catch (e: Exception) {
-                if (e is IOException)
-                    throw NoInternetException
-                //todo else throw generic error
-                throw e
+                throw GenericDomainException(e)
             }
         }
     }

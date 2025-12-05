@@ -1,13 +1,11 @@
-package github.detrig.weatherapp.weather.data
+package github.detrig.weatherapp.weather.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherCloud(
-    @SerializedName("current")
-    val currentWeather: CurrentWeather
-)
+data class CurrentWeatherCloud(
+    @SerializedName("last_updated_epoch")
+    val lastUpdatedTime: Long,
 
-data class CurrentWeather(
     @SerializedName("temp_c")
     val temp: Float,
 
@@ -15,7 +13,7 @@ data class CurrentWeather(
     val isDay: Int,
 
     @SerializedName("condition")
-    val condition: Condition,
+    val conditionCloud: ConditionCloud,
 
     @SerializedName("wind_kph")
     val windSpeed: Float,
@@ -24,10 +22,13 @@ data class CurrentWeather(
     val uv: Float,
 
     @SerializedName("feelslike_c")
-    val feelTemp: Float
+    val feelTemp: Float,
+
+    @SerializedName("air_quality")
+    val airQuality: AirQualityCloud
 )
 
-data class Condition(
+data class ConditionCloud(
     @SerializedName("text")
     val text: String,
 
@@ -37,4 +38,3 @@ data class Condition(
     @SerializedName("code")
     val code: Int
 )
-

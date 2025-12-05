@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.findcity.data
+package github.detrig.weatherapp.findcity.data.models
 
 import com.google.gson.annotations.SerializedName
 
