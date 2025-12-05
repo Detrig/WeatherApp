@@ -17,7 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import github.detrig.weatherapp.R
 import github.detrig.weatherapp.weather.presentation.models.ForecastDayUiModel
 import github.detrig.weatherapp.weather.presentation.models.WeatherForHourUi
 
@@ -78,12 +81,61 @@ private fun HourWeatherItem(hour: WeatherForHourUi) {
 
         Spacer(Modifier.height(4.dp))
 
-        Text(text = hour.temp, style = MaterialTheme.typography.bodySmall)
+        Text(text = hour.tempText, style = MaterialTheme.typography.bodySmall)
 
         Spacer(Modifier.height(2.dp))
-        Text(text = "Ветер: ${hour.windSpeed}", style = MaterialTheme.typography.labelSmall)
-        Text(text = "Дождь: ${hour.chanceOfRain}", style = MaterialTheme.typography.labelSmall)
-        Text(text = "Снег: ${hour.chanceOfSnow}", style = MaterialTheme.typography.labelSmall)
-        Text(text = "Облака: ${hour.cloud.toInt()}%", style = MaterialTheme.typography.labelSmall)
+        Column(modifier = Modifier.align(Alignment.Start)) {
+            Text(text = "Ветер: ${hour.windSpeed}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Дождь: ${hour.chanceOfRain}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Снег: ${hour.chanceOfSnow}", style = MaterialTheme.typography.labelSmall)
+            Text(
+                text = "Облака: ${hour.cloud.toInt()}%",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewForecastUi() {
+    ForecastUi(
+        forecastUi = listOf(
+            ForecastDayUiModel(
+                date = "02.12.2025",
+                weatherForHour = listOf(
+                    WeatherForHourUi(
+                        time = "22:00",
+                        tempValue = 0f,
+                        tempText = "0*",
+                        windSpeed = "5f",
+                        chanceOfRain = "",
+                        iconForWeather = R.drawable.ic_o3,
+                        chanceOfSnow = "",
+                        cloud = 0f
+                    ),
+                    WeatherForHourUi(
+                        time = "23:00",
+                        tempValue = 2f,
+                        tempText = "2*",
+                        windSpeed = "5f",
+                        chanceOfRain = "",
+                        chanceOfSnow = "",
+                        iconForWeather = R.drawable.ic_o3,
+                        cloud = 0f
+                    ),
+                    WeatherForHourUi(
+                        time = "24:00",
+                        tempValue = 2f,
+                        tempText = "2*",
+                        windSpeed = "5f",
+                        iconForWeather = R.drawable.ic_o3,
+                        chanceOfRain = "",
+                        chanceOfSnow = "",
+                        cloud = 0f
+                    )
+                )
+            )
+        )
+    )
 }

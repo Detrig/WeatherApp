@@ -1,9 +1,12 @@
 package github.detrig.weatherapp.core.di
 
+import android.content.Context
+import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import github.detrig.weatherapp.core.RunAsync
 import okhttp3.OkHttpClient
@@ -20,13 +23,13 @@ abstract class CoreBindsModule {
 
     @Binds
     @Singleton
-    abstract fun bindRunAsync(runAsync: RunAsync.Base) : RunAsync
+    abstract fun bindRunAsync(runAsync: RunAsync.Base): RunAsync
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 class CoreModule {
-
+    //Internet
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
@@ -53,4 +56,10 @@ class CoreModule {
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
+
+    //WorkManager
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager =
+        WorkManager.getInstance(context)
 }

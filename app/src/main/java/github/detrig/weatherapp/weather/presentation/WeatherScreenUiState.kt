@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import github.detrig.weatherapp.R
+import github.detrig.weatherapp.custom_views.WeatherHorizontalGraph
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 import github.detrig.weatherapp.weather.presentation.ui.AirQualityUi
 import github.detrig.weatherapp.weather.presentation.ui.ForecastUi
@@ -56,6 +57,12 @@ interface WeatherScreenUiState : Serializable {
                 WeatherUi(weatherUi)
                 Spacer(modifier = Modifier.height(16.dp))
                 AirQualityUi(weatherUi.airQuality)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                weatherUi.forecast.forEach {
+                    WeatherHorizontalGraph(points = it.weatherForHour)
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
                 ForecastUi(weatherUi.forecast, modifier = Modifier)
             }
@@ -92,7 +99,6 @@ interface WeatherScreenUiState : Serializable {
                 }
             }
         }
-
     }
 
     data object Loading : WeatherScreenUiState {

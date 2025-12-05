@@ -29,7 +29,7 @@ class WeatherUiMapper @Inject constructor(
     }
 
     override fun mapEmpty(): WeatherScreenUiState {
-        return WeatherScreenUiState.Empty
+        return WeatherScreenUiState.GenericError
     }
 
     override fun mapNoInternetError(): WeatherScreenUiState {

@@ -140,10 +140,10 @@ private object MapAirParams {
     fun dangerLevelForPm25(pm25: Float): DangerLevel =
         when {
             pm25 <= 12f -> DangerLevel.GOOD
-            pm25 <= 35.4f -> DangerLevel.MODERATE
-            pm25 <= 55.4f -> DangerLevel.UNHEALTHY_SENSITIVE
-            pm25 <= 150.4f -> DangerLevel.UNHEALTHY
-            pm25 <= 250.4f -> DangerLevel.VERY_UNHEALTHY
+            pm25 <= 36f -> DangerLevel.MODERATE
+            pm25 <= 55f -> DangerLevel.UNHEALTHY_SENSITIVE
+            pm25 <= 150f -> DangerLevel.UNHEALTHY
+            pm25 <= 250f -> DangerLevel.VERY_UNHEALTHY
             else -> DangerLevel.HAZARDOUS
         }
 

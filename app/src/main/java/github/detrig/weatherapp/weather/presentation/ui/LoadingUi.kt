@@ -16,6 +16,7 @@ fun LoadingUi() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.Center)
                 .testTag("CircleLoading"),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

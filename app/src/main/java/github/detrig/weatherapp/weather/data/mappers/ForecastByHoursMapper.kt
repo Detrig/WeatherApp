@@ -33,9 +33,9 @@ fun WeatherForHourCloud.toDomain(): WeatherForHour {
         time = this.time.toLocalTime(),
         temp = this.temp,
         windSpeed = this.windSpeed,
-        chanceOfRain = (this.chanceOfRain / 100).toFloat(),
-        chanceOfSnow = (this.chanceOfSnow / 100).toFloat(),
-        cloud = (this.cloud / 100).toFloat()
+        chanceOfRain = (this.chanceOfRain / 100f),
+        chanceOfSnow = (this.chanceOfSnow / 100f),
+        cloud = (this.cloud / 100f)
     )
 }
 
