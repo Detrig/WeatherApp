@@ -1,4 +1,4 @@
-package github.detrig.weatherapp.weather.data.shedule
+package github.detrig.weatherapp.core.shedule
 
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -7,7 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import github.detrig.weatherapp.weather.domain.WeatherUpdateScheduler
+import github.detrig.weatherapp.weather.domain.schedule.WeatherUpdateScheduler
 import github.detrig.weatherapp.weather.workers.UpdateWeatherWorker
 import java.time.Duration
 import javax.inject.Inject
