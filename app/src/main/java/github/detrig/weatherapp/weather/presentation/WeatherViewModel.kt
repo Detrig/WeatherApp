@@ -11,6 +11,7 @@ import github.detrig.weatherapp.core.network.NetworkStatusRepository
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.schedule.WeatherUpdateScheduler
+import github.detrig.weatherapp.weather.domain.widget.WeatherWidgetUpdater
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -25,6 +26,7 @@ class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val weatherUpdateScheduler: WeatherUpdateScheduler,
     private val networkStatusRepository: NetworkStatusRepository,
+    private val widgetUpdater: WeatherWidgetUpdater,
     private val savedStateHandle: SavedStateHandle,
     private val runAsync: RunAsync
 ) : ViewModel() {
@@ -51,6 +53,7 @@ class WeatherViewModel @Inject constructor(
     fun loadWeather() {
         runAsync.runAsync(viewModelScope, background = {
             val weatherResult = repository.weather()
+            widgetUpdater.updateWidgets()
             weatherResult.map(weatherUiMapper)
         }) {
 //            savedStateHandle[KEY] = it

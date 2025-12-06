@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// !!! top-level extension, ВНЕ класса:
 private val Context.notificationsDataStore by preferencesDataStore(
     name = "notifications_prefs"
 )

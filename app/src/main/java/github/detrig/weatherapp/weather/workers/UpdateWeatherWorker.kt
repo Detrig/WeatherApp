@@ -9,6 +9,7 @@ import github.detrig.weatherapp.weather.domain.notification.WeatherNotificationS
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.models.Weather
+import github.detrig.weatherapp.weather.domain.widget.WeatherWidgetUpdater
 import kotlin.coroutines.cancellation.CancellationException
 
 class UpdateWeatherWorker(
@@ -31,6 +32,10 @@ class UpdateWeatherWorker(
         entryPoint.weatherNotificationSender()
     }
 
+    private val weatherWidgetUpdater: WeatherWidgetUpdater by lazy {
+        entryPoint.weatherWidgetUpdater()
+    }
+
     override suspend fun doWork(): Result {
         return try {
             val result = weatherRepository.weather()
@@ -42,6 +47,7 @@ class UpdateWeatherWorker(
                 }
             }
 
+            weatherWidgetUpdater.updateWidgets()
             Log.d("alz-04", "UpdateWeatherWorker: YES")
             Result.success()
         } catch (e: CancellationException) {
