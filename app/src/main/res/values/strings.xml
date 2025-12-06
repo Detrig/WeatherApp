@@ -24,4 +24,5 @@
     <string name="harmful_for_everyone">Вреден для всех</string>
     <string name="very_harmful">Очень вредный</string>
     <string name="dangerous">Опасный</string>
+    <string name="notificationSwitch">Уведомления о погоде</string>
 </resources>

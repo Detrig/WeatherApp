@@ -11,10 +11,14 @@ import github.detrig.weatherapp.weather.presentation.models.ParameterUi
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel, navigateToFindCityScreen: () -> Unit) {
+fun WeatherScreen(
+    viewModel: WeatherViewModel,
+    navigateToFindCityScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit
+) {
 
     val weatherScreenUi = viewModel.state.collectAsStateWithLifecycle()
-    weatherScreenUi.value.Show(onRetryClick = viewModel::loadWeather)
+    weatherScreenUi.value.Show(onRetryClick = viewModel::loadWeather, onSettingClick = navigateToSettingsScreen)
 
     BackHandler {
         navigateToFindCityScreen.invoke()
@@ -25,7 +29,7 @@ fun WeatherScreen(viewModel: WeatherViewModel, navigateToFindCityScreen: () -> U
 @Composable
 fun PreviewWeatherNoInternetScreenUi() {
     WeatherScreenUiState.NoConnectionError
-        .Show(onRetryClick = {})
+        .Show(onRetryClick = {}, onSettingClick = {})
 }
 
 @Preview(showBackground = true)
@@ -91,6 +95,6 @@ fun PreviewWeatherScreenUi() {
         forecast = listOf()
     )
 
-    WeatherScreenUiState.Base(weatherMock).Show(onRetryClick = {})
+    WeatherScreenUiState.Base(weatherMock).Show(onRetryClick = {}, onSettingClick = {})
 }
 

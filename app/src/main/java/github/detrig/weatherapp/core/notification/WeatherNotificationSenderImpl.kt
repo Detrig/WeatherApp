@@ -39,7 +39,6 @@ class WeatherNotificationSenderImpl @Inject constructor(
             return
         }
 
-        // 1. Создаём канал (один раз, но можем вызывать каждый раз — он idempotent)
         ensureChannel()
 
         // 2. PendingIntent для открытия приложения/экрана погоды
@@ -53,9 +52,8 @@ class WeatherNotificationSenderImpl @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // 3. Текст уведомления
         val title = "Обновление погоды"
-        val text = "Сейчас ${weather.temperature}°C, ${weather.condition}"
+        val text = "Сейчас ${weather.temperature}°C, ${weather.windSpeed}km/h\nPm2.5: ${weather.airQuality.pm25}"
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.rainy80) // твой значок

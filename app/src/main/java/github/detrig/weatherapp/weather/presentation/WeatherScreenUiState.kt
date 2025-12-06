@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import github.detrig.weatherapp.R
+import github.detrig.weatherapp.core.WeatherParamsParser
 import github.detrig.weatherapp.custom_views.WeatherHorizontalGraph
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 import github.detrig.weatherapp.weather.presentation.ui.AirQualityUi
@@ -33,20 +34,20 @@ import java.io.Serializable
 interface WeatherScreenUiState : Serializable {
 
     @Composable
-    fun Show(onRetryClick: () -> Unit)
+    fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit)
 
     data object Empty : WeatherScreenUiState {
         private fun readResolve(): Any = Empty
 
         @Composable
-        override fun Show(onRetryClick: () -> Unit) = Unit
+        override fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit) = Unit
     }
 
     data class Base(private val weatherUi: WeatherInCityUi) : WeatherScreenUiState {
 
         @Composable
-        override fun Show(onRetryClick: () -> Unit) {
-            val backgroundModifier = backgroundForCondition(weatherUi.condition)
+        override fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit) {
+            val backgroundModifier = WeatherParamsParser.backgroundForCondition(weatherUi.condition)
 
             Column(
                 modifier = Modifier
@@ -54,13 +55,14 @@ interface WeatherScreenUiState : Serializable {
                     .then(backgroundModifier)
                     .verticalScroll(rememberScrollState())
             ) {
-                WeatherUi(weatherUi)
+                WeatherUi(weatherUi, onSettingClick)
                 Spacer(modifier = Modifier.height(16.dp))
                 AirQualityUi(weatherUi.airQuality)
                 Spacer(modifier = Modifier.height(16.dp))
 
                 weatherUi.forecast.forEach {
                     WeatherHorizontalGraph(points = it.weatherForHour)
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -73,7 +75,7 @@ interface WeatherScreenUiState : Serializable {
         private fun readResolve(): Any = NoConnectionError
 
         @Composable
-        override fun Show(onRetryClick: () -> Unit) {
+        override fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -105,7 +107,7 @@ interface WeatherScreenUiState : Serializable {
         private fun readResolve(): Any = Loading
 
         @Composable
-        override fun Show(onRetryClick: () -> Unit) {
+        override fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit) {
             LoadingUi()
         }
     }
@@ -114,7 +116,7 @@ interface WeatherScreenUiState : Serializable {
         private fun readResolve(): Any = GenericError
 
         @Composable
-        override fun Show(onRetryClick: () -> Unit) {
+        override fun Show(onRetryClick: () -> Unit, onSettingClick: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -144,29 +146,3 @@ interface WeatherScreenUiState : Serializable {
 }
 
 
-@Composable
-private fun backgroundForCondition(condition: String): Modifier {
-    val lower = condition.lowercase()
-    val color = when {
-        "sunny" in lower -> Color(0xFFFFE082)
-        "cloud" in lower -> Color(0xFF90A4AE)
-        "rain" in lower -> Color(0xFF80CBC4)
-        "snow" in lower -> Color(0xFFE0F7FA)
-        "storm" in lower -> Color(0xFF616161)
-        else -> Color(0xFFB0BEC5)
-    }
-
-    val testTag = when {
-        "sunny" in lower -> "SunnyBackground"
-        "cloud" in lower -> "CloudyBackground"
-        "rain" in lower -> "RainBackground"
-        "snow" in lower -> "SnowBackground"
-        "storm" in lower -> "StormBackground"
-        else -> "DefaultBackground"
-    }
-
-    return Modifier
-        .background(color)
-        //.paint(painter = painterResource(R.drawable.no_internet), contentScale = ContentScale.Crop)
-        .testTag(testTag)
-}
