@@ -21,7 +21,7 @@ class WeatherUpdateSchedulerImpl @Inject constructor(
 //            .build()
 
         val updateWeatherRequest =
-            PeriodicWorkRequestBuilder<UpdateWeatherWorker>(Duration.ofMinutes(15))
+            PeriodicWorkRequestBuilder<UpdateWeatherWorker>(Duration.ofMinutes(60))
                 .build()
 
         workManager.enqueueUniquePeriodicWork(
