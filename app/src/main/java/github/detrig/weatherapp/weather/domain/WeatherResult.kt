@@ -23,7 +23,7 @@ interface WeatherResult {
     }
 
     data class Base(
-        private val weather: Weather
+        val weather: Weather
     ) : WeatherResult {
         override fun <T : Serializable> map(mapper: Mapper<T>): T {
             return mapper.mapWeatherInCity(weather)

@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +31,7 @@ import github.detrig.weatherapp.weather.presentation.models.ParameterUi
 import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
 
 @Composable
-fun WeatherUi(cityParams: WeatherInCityUi) {
+fun WeatherUi(cityParams: WeatherInCityUi, onSettingClick: () -> Unit) {
 
     Box(
         modifier = Modifier
@@ -43,14 +47,27 @@ fun WeatherUi(cityParams: WeatherInCityUi) {
                 )
                 .padding(8.dp)
         ) {
-            Text(
-                text = cityParams.cityName,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("City"),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = cityParams.cityName,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("City"),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+
+                IconButton(
+                    onClick = onSettingClick,
+                    modifier = Modifier.align(Alignment.CenterEnd).size(24.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.settings),
+                        contentDescription = "",
+                        Modifier.size(20.dp)
+                    )
+                }
+            }
 
             Text(
                 text = cityParams.localTime,
@@ -202,6 +219,7 @@ fun WeatherUiPreview() {
             condition = "sunny",
             airQuality = airQualityMock,
             forecast = listOf()
-        )
+        ),
+        onSettingClick = {}
     )
 }

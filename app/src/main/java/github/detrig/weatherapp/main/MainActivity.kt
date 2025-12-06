@@ -27,6 +27,8 @@ import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import github.detrig.weatherapp.findcity.presentation.FindCityOrGetLocationScreen
+import github.detrig.weatherapp.settings.SettingsScreen
+import github.detrig.weatherapp.settings.SettingsViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -83,7 +85,16 @@ private fun MainContent(innerPadding: PaddingValues, viewModel: MainViewModel = 
                             popUpTo("weatherScreen") { inclusive = true }
                             launchSingleTop = true
                         }
+                    },
+                    navigateToSettingsScreen = {
+                        navController.navigate("settingsScreen")
                     }
+                )
+            }
+
+            composable("settingsScreen") {
+                SettingsScreen(
+                    viewModel = hiltViewModel<SettingsViewModel>()
                 )
             }
         }
