@@ -8,6 +8,41 @@
 
 ---
 
+## 🧰 Стек технологий
+
+<table>
+  <tr>
+    <td>
+      <strong>Язык и архитектура</strong><br>
+      Kotlin · Coroutines · Kotlin Flow · Clean Architecture (data / domain / presentation) · MVVM
+    </td>
+    <td>
+      <strong>Данные и сеть</strong><br>
+      Retrofit2 · OkHttp · WeatherAPI REST · Room · DataStore (Preferences)
+    </td>
+    <td>
+      <strong>UI</strong><br>
+      Jetpack Compose · Material Design · Glance AppWidget
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>Фон и система</strong><br>
+      WorkManager · Notifications API · Google Play Services Location
+    </td>
+    <td>
+      <strong>AndroidX / core</strong><br>
+      ViewModel · Lifecycle · Activity Compose · (Navigation / single-activity подход)
+    </td>
+    <td>
+      <strong>Тестирование</strong><br>
+      JUnit · Espresso
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 📸 Скриншоты
 
 | Поиск города | Погода в выбранном городе | Уведомление | Виджет |
