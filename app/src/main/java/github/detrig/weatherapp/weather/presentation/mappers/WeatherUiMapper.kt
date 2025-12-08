@@ -19,7 +19,7 @@ class WeatherUiMapper @Inject constructor(
             cityName = weather.cityName,
             temperature = "${weather.temperature}°",
             feelTemperature = "${weather.feelTemperature}°",
-            wind = "${weather.windSpeed} м/с",
+            wind = "${weather.windSpeed} км/ч",
             uv = "${weather.uv}",
             condition = weather.condition,
             airQuality = airQualityUiMapper.map(weather.airQuality),

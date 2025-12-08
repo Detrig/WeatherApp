@@ -46,8 +46,8 @@ fun FindCityScreen(
         onInputChange = { text ->
             if (text.isNotEmpty()) {
                 viewModel.findCity(cityName = text)
-                input.value = text
             }
+            input.value = text
         },
         foundCityScreenUiState = foundCityUi.value,
         onFoundCityClick = { foundCity: FoundCity ->
