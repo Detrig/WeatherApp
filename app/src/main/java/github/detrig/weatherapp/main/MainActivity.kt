@@ -26,6 +26,8 @@ import github.detrig.weatherapp.weather.presentation.WeatherScreen
 import github.detrig.weatherapp.weather.presentation.WeatherViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import github.detrig.weatherapp.findcity.presentation.FindCityOrGetLocationScreen
 import github.detrig.weatherapp.settings.SettingsScreen
 import github.detrig.weatherapp.settings.SettingsViewModel
@@ -68,7 +70,9 @@ private fun MainContent(innerPadding: PaddingValues, viewModel: MainViewModel = 
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            composable("findCityScreen") {
+            composable(
+                "findCityScreen",
+            ) {
                 FindCityOrGetLocationScreen(
                     viewModel = hiltViewModel<FindCityViewModel>(),
                     navigateToWeatherScreen = {

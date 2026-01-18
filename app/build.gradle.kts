@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.kotlin.kapt)
+   // alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
 }
 
@@ -18,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "github.detrig.weatherapp.HiltTestRunner"
     }
 
     buildTypes {
@@ -74,10 +74,12 @@ dependencies {
     implementation(libs.hilt.android)
     androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.hilt.android.compiler)
+    kspAndroidTest(libs.hilt.android.compiler)
     //kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation("androidx.hilt:hilt-work:1.3.0")
     //kapt("androidx.hilt:hilt-compiler:1.3.0")
+    androidTestImplementation("org.mockito:mockito-android:5.3.1")
 
     implementation(libs.retrofit)
     implementation(libs.okhttp)
