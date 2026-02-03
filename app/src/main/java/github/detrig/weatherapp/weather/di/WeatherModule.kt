@@ -1,5 +1,6 @@
 package github.detrig.weatherapp.weather.di
 
+import github.detrig.weatherapp.weather.data.service.WeatherNotificationSenderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -12,9 +13,10 @@ import github.detrig.weatherapp.weather.data.WeatherRepositoryImpl
 import github.detrig.weatherapp.weather.data.api.WeatherService
 import github.detrig.weatherapp.weather.data.db.CacheModule
 import github.detrig.weatherapp.weather.data.db.WeatherDao
-import github.detrig.weatherapp.core.shedule.WeatherUpdateSchedulerImpl
+import github.detrig.weatherapp.weather.data.shedule.WeatherUpdateSchedulerImpl
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
+import github.detrig.weatherapp.weather.domain.notification.WeatherNotificationSender
 import github.detrig.weatherapp.weather.domain.schedule.WeatherUpdateScheduler
 import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
 import github.detrig.weatherapp.weather.presentation.mappers.WeatherUiMapper
@@ -76,4 +78,10 @@ abstract class WeatherSingletonBindsModule {
     @Binds
     @Singleton
     abstract fun bindWeatherRepository(repository: WeatherRepositoryImpl): WeatherRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherNotificationSender(
+        impl: WeatherNotificationSenderImpl
+    ): WeatherNotificationSender
 }

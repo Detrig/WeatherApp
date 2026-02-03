@@ -1,11 +1,11 @@
 package github.detrig.weatherapp.findcity
 
 import androidx.lifecycle.SavedStateHandle
-import github.detrig.weatherapp.core.RunAsync
+import com.detrig.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
 import github.detrig.weatherapp.findcity.domain.models.FoundCity
-import github.detrig.weatherapp.core.NoInternetException
+import com.detrig.core.NoInternetException
 import github.detrig.weatherapp.findcity.presentation.mappers.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.findcity.presentation.FoundCityScreenUiState

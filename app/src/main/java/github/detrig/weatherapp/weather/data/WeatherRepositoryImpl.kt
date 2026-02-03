@@ -2,8 +2,9 @@ package github.detrig.weatherapp.weather.data
 
 import android.util.Log
 import com.google.gson.Gson
-import github.detrig.weatherapp.core.DomainException
-import github.detrig.weatherapp.core.GenericDomainException
+import com.detrig.core.DomainException
+import com.detrig.core.GenericDomainException
+import com.detrig.core.NoInternetException
 import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.weather.data.mappers.toDomain
 import github.detrig.weatherapp.weather.data.models.WeatherCloud
@@ -37,7 +38,9 @@ class WeatherRepositoryImpl @Inject constructor(
             val cachedWeather = cachedDataSource.getCachedWeather()
             return if (cachedWeather != null) {
                 val cloud = gson.fromJson(cachedWeather.json, WeatherCloud::class.java)
-                WeatherResult.Base(cloud.toDomain(foundCity.name))
+                if (cloud.location.cityName == foundCity.name)
+                    WeatherResult.Base(cloud.toDomain(foundCity.name))
+                else WeatherResult.Failed(NoInternetException)
             } else {
                 WeatherResult.Failed(e)
             }
@@ -55,8 +58,8 @@ class WeatherRepositoryImpl @Inject constructor(
                     WeatherResult.Empty
                 } else {
                     val cloud = gson.fromJson(entity.json, WeatherCloud::class.java)
-                    val foundCity = cachedDataSource.getCityParams()
-                    WeatherResult.Base(cloud.toDomain(foundCity.name))
+                    //val foundCity = cachedDataSource.getCityParams()
+                    WeatherResult.Base(cloud.toDomain(cloud.location.cityName))
                 }
             }
             .catch { e ->

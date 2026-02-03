@@ -25,7 +25,7 @@ import androidx.glance.layout.width
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import dagger.hilt.android.EntryPointAccessors
-import github.detrig.weatherapp.core.WeatherParamsParser
+import com.detrig.core.WeatherParamsParser
 import github.detrig.weatherapp.main.MainActivity
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.models.Weather

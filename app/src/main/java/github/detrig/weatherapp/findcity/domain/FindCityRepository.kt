@@ -3,7 +3,7 @@ package github.detrig.weatherapp.findcity.domain
 import android.util.Log
 import github.detrig.weatherapp.findcity.data.FindCityCachedDataSource
 import github.detrig.weatherapp.findcity.data.FindCityCloudDataSource
-import github.detrig.weatherapp.core.DomainException
+import com.detrig.core.DomainException
 import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import javax.inject.Inject
 

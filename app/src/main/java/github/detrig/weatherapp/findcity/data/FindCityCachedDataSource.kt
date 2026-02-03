@@ -2,8 +2,8 @@ package github.detrig.weatherapp.findcity.data
 
 import android.content.Context
 import androidx.core.content.edit
+import com.detrig.core.AbstractCachedDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
-import github.detrig.weatherapp.core.AbstractCachedDataSource
 import javax.inject.Inject
 
 interface FindCityCachedDataSource {

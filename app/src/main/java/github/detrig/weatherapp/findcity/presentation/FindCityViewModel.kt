@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import github.detrig.weatherapp.core.RunAsync
+import com.detrig.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
 import github.detrig.weatherapp.findcity.domain.models.FoundCity

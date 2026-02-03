@@ -1,7 +1,7 @@
 package github.detrig.weatherapp.weather.domain
 
-import github.detrig.weatherapp.core.DomainException
-import github.detrig.weatherapp.core.NoInternetException
+import com.detrig.core.DomainException
+import com.detrig.core.NoInternetException
 import github.detrig.weatherapp.weather.domain.models.Weather
 import java.io.Serializable
 

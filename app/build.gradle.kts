@@ -18,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "github.detrig.weatherapp.HiltTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -74,12 +74,10 @@ dependencies {
     implementation(libs.hilt.android)
     androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.hilt.android.compiler)
-    kspAndroidTest(libs.hilt.android.compiler)
     //kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation("androidx.hilt:hilt-work:1.3.0")
     //kapt("androidx.hilt:hilt-compiler:1.3.0")
-    androidTestImplementation("org.mockito:mockito-android:5.3.1")
 
     implementation(libs.retrofit)
     implementation(libs.okhttp)
@@ -98,4 +96,6 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation("androidx.glance:glance-appwidget:1.1.1")
+
+    implementation(project(":core"))
 }

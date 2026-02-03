@@ -5,7 +5,7 @@
 //import github.detrig.weatherapp.R
 //import github.detrig.weatherapp.findcity.FakeRunAsync
 //import github.detrig.weatherapp.findcity.domain.models.FoundCity
-//import github.detrig.weatherapp.core.NoInternetException
+//import com.detrig.core.NoInternetException
 //import github.detrig.weatherapp.weather.domain.models.Weather
 //import github.detrig.weatherapp.weather.domain.WeatherRepository
 //import github.detrig.weatherapp.weather.domain.WeatherResult

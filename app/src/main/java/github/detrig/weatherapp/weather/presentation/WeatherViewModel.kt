@@ -5,9 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import github.detrig.weatherapp.core.RunAsync
-import github.detrig.weatherapp.core.network.NetworkStatus
-import github.detrig.weatherapp.core.network.NetworkStatusRepository
+import com.detrig.core.RunAsync
+import com.detrig.core.network.NetworkStatus
+import com.detrig.core.network.NetworkStatusRepository
 import github.detrig.weatherapp.weather.domain.WeatherRepository
 import github.detrig.weatherapp.weather.domain.WeatherResult
 import github.detrig.weatherapp.weather.domain.schedule.WeatherUpdateScheduler

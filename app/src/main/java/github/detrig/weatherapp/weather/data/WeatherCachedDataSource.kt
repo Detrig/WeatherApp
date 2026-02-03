@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import github.detrig.weatherapp.core.AbstractCachedDataSource
+import com.detrig.core.AbstractCachedDataSource
 import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.weather.data.db.WeatherCacheEntity
 import github.detrig.weatherapp.weather.data.db.WeatherDao
