@@ -1,7 +1,7 @@
 package com.detrig.weather.presentation.mappers
 
 import androidx.annotation.DrawableRes
-import github.detrig.weatherapp.R
+import com.detrig.core.R
 import com.detrig.weather.domain.models.ForecastDay
 import com.detrig.weather.domain.models.WeatherForHour
 import com.detrig.weather.presentation.models.ForecastDayUiModel

@@ -19,9 +19,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.detrig.core.R
 import com.detrig.core.WeatherParamsParser
-import github.detrig.weatherapp.R
-import github.detrig.weatherapp.custom_views.WeatherHorizontalGraph
+import com.detrig.weather.customview.WeatherHorizontalGraph
 import com.detrig.weather.presentation.models.WeatherInCityUi
 import com.detrig.weather.presentation.ui.AirQualityUi
 import com.detrig.weather.presentation.ui.ForecastUi

@@ -2,7 +2,7 @@
 //
 //import androidx.compose.ui.graphics.Color
 //import androidx.lifecycle.SavedStateHandle
-//import github.detrig.weatherapp.R
+//import com.detrig.core.R
 //import github.detrig.weatherapp.findcity.FakeRunAsync
 //import github.detrig.weatherapp.findcity.domain.models.FoundCity
 //import com.detrig.core.NoInternetException

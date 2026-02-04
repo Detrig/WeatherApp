@@ -19,16 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import github.detrig.weatherapp.findcity.presentation.FindCityScreen
-import github.detrig.weatherapp.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.ui.theme.WeatherAppTheme
 import com.detrig.weather.presentation.WeatherScreen
 import com.detrig.weather.presentation.WeatherViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import github.detrig.weatherapp.findcity.presentation.FindCityOrGetLocationScreen
+import com.detrig.findcity.presentation.FindCityOrGetLocationScreen
+import com.detrig.findcity.presentation.FindCityViewModel
 import github.detrig.weatherapp.settings.SettingsScreen
 import github.detrig.weatherapp.settings.SettingsViewModel
 

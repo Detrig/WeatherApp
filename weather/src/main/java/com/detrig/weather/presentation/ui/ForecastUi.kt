@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import github.detrig.weatherapp.R
+import com.detrig.core.R
 import com.detrig.weather.presentation.models.ForecastDayUiModel
 import com.detrig.weather.presentation.models.WeatherForHourUi
 

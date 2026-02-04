@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import github.detrig.weatherapp.R
+import com.detrig.core.R
 import com.detrig.weather.presentation.models.AirQualityUiModel
 import com.detrig.weather.presentation.models.ParameterUi
 import com.detrig.weather.presentation.models.WeatherInCityUi

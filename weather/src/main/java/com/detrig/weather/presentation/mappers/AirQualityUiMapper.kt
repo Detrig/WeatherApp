@@ -1,7 +1,7 @@
 package com.detrig.weather.presentation.mappers
 
 import androidx.compose.ui.graphics.Color
-import github.detrig.weatherapp.R
+import com.detrig.core.R
 import com.detrig.weather.domain.models.AirQuality
 import com.detrig.weather.presentation.models.AirQualityUiModel
 import com.detrig.weather.presentation.models.ParameterUi

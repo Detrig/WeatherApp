@@ -66,36 +66,16 @@ dependencies {
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.navigation.compose)
 
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-    //kapt(libs.androidx.room.compiler)
-    androidTestImplementation(libs.androidx.room.testing)
-
     implementation(libs.hilt.android)
     androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.hilt.android.compiler)
-    //kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.work)
-    //kapt("androidx.hilt:hilt-compiler:1.3.0")
-
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp3.logging.interceptor)
-    implementation(libs.retrofit.converter.gson)
-
-    implementation(libs.gson)
-
-    implementation(libs.play.services.location)
-
-    implementation(libs.androidx.work.runtime.ktx)
-
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.glance.appwidget)
 
     implementation(project(":core"))
+    implementation(project(":core:model"))
     implementation(project(":weather"))
+    implementation(project(":findcity"))
 }
