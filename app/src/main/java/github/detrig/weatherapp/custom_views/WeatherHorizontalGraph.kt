@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import github.detrig.weatherapp.weather.presentation.models.WeatherForHourUi
+import com.detrig.weather.presentation.models.WeatherForHourUi
 
 /**
 size: Size — текущий размер области рисования в px.

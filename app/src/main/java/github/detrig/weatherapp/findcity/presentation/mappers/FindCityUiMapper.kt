@@ -1,7 +1,6 @@
 package github.detrig.weatherapp.findcity.presentation.mappers
 
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.findcity.presentation.FoundCityScreenUiState
 import javax.inject.Inject
 

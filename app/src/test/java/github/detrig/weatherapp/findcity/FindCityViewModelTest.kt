@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.detrig.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import com.detrig.core.NoInternetException
 import github.detrig.weatherapp.findcity.presentation.mappers.FindCityUiMapper
 import github.detrig.weatherapp.findcity.presentation.FindCityViewModel

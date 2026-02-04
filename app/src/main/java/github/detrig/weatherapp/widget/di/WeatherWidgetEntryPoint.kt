@@ -3,7 +3,7 @@ package github.detrig.weatherapp.widget.di
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import github.detrig.weatherapp.weather.domain.WeatherRepository
+import com.detrig.weather.domain.WeatherRepository
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)

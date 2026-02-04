@@ -76,7 +76,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     //kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation("androidx.hilt:hilt-work:1.3.0")
+    implementation(libs.androidx.hilt.work)
     //kapt("androidx.hilt:hilt-compiler:1.3.0")
 
     implementation(libs.retrofit)
@@ -88,14 +88,14 @@ dependencies {
 
     implementation(libs.play.services.location)
 
-    implementation("androidx.work:work-runtime-ktx:2.11.0")
+    implementation(libs.androidx.work.runtime.ktx)
 
-    val room_version = "2.8.4"
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
-    implementation("androidx.glance:glance-appwidget:1.1.1")
+    implementation(libs.androidx.glance.appwidget)
 
     implementation(project(":core"))
+    implementation(project(":weather"))
 }

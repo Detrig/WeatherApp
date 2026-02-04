@@ -58,7 +58,7 @@ dependencies {
     implementation(libs.hilt.android)
     androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.hilt.android.compiler)
-    implementation("androidx.hilt:hilt-work:1.3.0")
+    implementation(libs.androidx.hilt.work)
 
     implementation(libs.retrofit)
     implementation(libs.okhttp)

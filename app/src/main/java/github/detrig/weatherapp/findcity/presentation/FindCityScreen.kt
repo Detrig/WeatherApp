@@ -29,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import github.detrig.weatherapp.R
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import java.io.Serializable
 
 @Composable

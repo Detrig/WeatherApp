@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 rootProject.name = "WeatherApp"
 include(":app")
 include(":core")
+include(":weather")
+include(":core:model")
+include(":findicty")

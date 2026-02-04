@@ -11,15 +11,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import github.detrig.weatherapp.findcity.presentation.FindCityScreenUi
 import github.detrig.weatherapp.findcity.presentation.FoundCityScreenUiState
-import github.detrig.weatherapp.weather.domain.models.Weather
-import github.detrig.weatherapp.weather.domain.models.AirQuality
-import github.detrig.weatherapp.weather.presentation.WeatherScreenUiState
-import github.detrig.weatherapp.weather.presentation.models.AirQualityUiModel
-import github.detrig.weatherapp.weather.presentation.models.ParameterUi
-import github.detrig.weatherapp.weather.presentation.models.WeatherInCityUi
+import com.detrig.weather.domain.models.Weather
+import com.detrig.weather.domain.models.AirQuality
+import com.detrig.weather.presentation.WeatherScreenUiState
+import com.detrig.weather.presentation.models.AirQualityUiModel
+import com.detrig.weather.presentation.models.ParameterUi
+import com.detrig.weather.presentation.models.WeatherInCityUi
 import org.junit.Before
 
 import org.junit.Test

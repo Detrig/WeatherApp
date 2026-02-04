@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import com.detrig.core.RunAsync
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 

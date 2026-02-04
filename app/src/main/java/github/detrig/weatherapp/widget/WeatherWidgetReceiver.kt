@@ -27,9 +27,9 @@ import androidx.glance.text.TextStyle
 import dagger.hilt.android.EntryPointAccessors
 import com.detrig.core.WeatherParamsParser
 import github.detrig.weatherapp.main.MainActivity
-import github.detrig.weatherapp.weather.domain.WeatherResult
-import github.detrig.weatherapp.weather.domain.models.Weather
-import github.detrig.weatherapp.weather.workers.WeatherWorkerEntryPoint
+import com.detrig.weather.domain.WeatherResult
+import com.detrig.weather.domain.models.Weather
+import com.detrig.weather.workers.WeatherWorkerEntryPoint
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.format.DateTimeFormatter
 

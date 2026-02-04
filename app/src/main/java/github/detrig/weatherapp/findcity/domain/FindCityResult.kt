@@ -1,7 +1,6 @@
 package github.detrig.weatherapp.findcity.domain
 
 import com.detrig.core.DomainException
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
 import com.detrig.core.NoInternetException
 import java.io.Serializable
 

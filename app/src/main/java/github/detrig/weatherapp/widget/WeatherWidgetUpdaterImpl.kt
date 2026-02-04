@@ -3,7 +3,7 @@ package github.detrig.weatherapp.widget
 import android.content.Context
 import androidx.glance.appwidget.updateAll
 import dagger.hilt.android.qualifiers.ApplicationContext
-import github.detrig.weatherapp.weather.domain.widget.WeatherWidgetUpdater
+import com.detrig.weather.domain.widget.WeatherWidgetUpdater
 import javax.inject.Inject
 
 class WeatherWidgetUpdaterImpl @Inject constructor(

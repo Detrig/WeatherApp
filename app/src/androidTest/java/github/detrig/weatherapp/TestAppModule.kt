@@ -13,12 +13,11 @@ import com.detrig.core.network.NetworkStatusRepository
 import github.detrig.weatherapp.findcity.di.FindCityBindsModule
 import github.detrig.weatherapp.findcity.domain.FindCityRepository
 import github.detrig.weatherapp.findcity.domain.FindCityResult
-import github.detrig.weatherapp.findcity.domain.models.FoundCity
-import github.detrig.weatherapp.weather.di.WeatherSingletonBindsModule
-import github.detrig.weatherapp.weather.domain.WeatherRepository
-import github.detrig.weatherapp.weather.domain.WeatherResult
-import github.detrig.weatherapp.weather.domain.schedule.WeatherUpdateScheduler
-import github.detrig.weatherapp.weather.domain.widget.WeatherWidgetUpdater
+import com.detrig.weather.di.WeatherSingletonBindsModule
+import com.detrig.weather.domain.WeatherRepository
+import com.detrig.weather.domain.WeatherResult
+import com.detrig.weather.domain.schedule.WeatherUpdateScheduler
+import com.detrig.weather.domain.widget.WeatherWidgetUpdater
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
