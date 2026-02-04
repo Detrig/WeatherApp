@@ -17,16 +17,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import github.detrig.weatherapp.R
+import com.detrig.core.R
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()
+fun SettingsScreen(
+    viewModel: SettingsViewModel
 ) {
     val notificationsEnabled by viewModel.notificationsEnabled.collectAsState()
 
@@ -76,8 +75,8 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()
     }
 }
 
-@Preview
-@Composable
-fun PreviewSettingsScreen() {
-    SettingsScreen()
-}
+//@Preview
+//@Composable
+//fun PreviewSettingsScreen() {
+//    SettingsScreen()
+//}

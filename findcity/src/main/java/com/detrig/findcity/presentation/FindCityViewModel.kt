@@ -1,0 +1,68 @@
+package com.detrig.findcity.presentation
+
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import com.detrig.core.RunAsync
+import com.detrig.core.model.FoundCity
+import com.detrig.findcity.domain.FindCityRepository
+import com.detrig.findcity.domain.FindCityResult
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
+
+@HiltViewModel
+class FindCityViewModel @Inject constructor(
+    private val mapper: FindCityResult.Mapper<FoundCityScreenUiState>,
+    private val repository: FindCityRepository,
+    private val savedStateHandle: SavedStateHandle,
+    private val runAsync: RunAsync
+) : ViewModel() {
+
+    val state: StateFlow<FoundCityScreenUiState> =
+        savedStateHandle.getStateFlow(KEY, mapper.mapEmpty())
+
+    fun findCity(cityName: String) {
+        if (cityName.trim().isEmpty())
+            savedStateHandle[KEY] = mapper.mapEmpty()
+        else
+            runAsync.runAsync(viewModelScope, {
+                savedStateHandle[KEY] = mapper.mapLoading()
+                val foundCity = repository.findCity(cityName).map(mapper)
+                foundCity
+            }) {
+                savedStateHandle[KEY] = it
+            }
+    }
+
+    fun saveChosenCity(foundCity: FoundCity) {
+        runAsync.runAsync(viewModelScope, background = {
+            repository.saveCity(foundCity)
+        }) {
+
+        }
+    }
+
+    fun findCityByLocation(lat: Double, lon: Double, onComplete: () -> Unit) {
+        Log.d("alz-04", "lat: $lat, lon: $lon")
+        runAsync.runAsync(viewModelScope, background = {
+            savedStateHandle[KEY] = mapper.mapLoading()
+
+            val foundCityResult = repository.findCity("$lat,$lon")
+
+            if (foundCityResult is FindCityResult.Base && foundCityResult.foundCity.isNotEmpty()) {
+                val foundCityByGeo = foundCityResult.foundCity.first()
+                repository.saveCity(foundCityByGeo)
+            }
+            foundCityResult.map(mapper)
+        }) {
+            savedStateHandle[KEY] = it
+            onComplete.invoke()
+        }
+    }
+
+    companion object {
+        private const val KEY = "FoundCityUiKey"
+    }
+}

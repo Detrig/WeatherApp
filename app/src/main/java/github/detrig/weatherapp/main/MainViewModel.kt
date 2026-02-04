@@ -3,8 +3,8 @@ package github.detrig.weatherapp.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import github.detrig.weatherapp.core.RunAsync
-import github.detrig.weatherapp.weather.domain.WeatherRepository
+import com.detrig.core.RunAsync
+import com.detrig.weather.domain.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

@@ -3,7 +3,7 @@ package github.detrig.weatherapp.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import github.detrig.weatherapp.weather.domain.notification.NotificationsPrefs
+import com.detrig.core.notification.NotificationsPrefs
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
